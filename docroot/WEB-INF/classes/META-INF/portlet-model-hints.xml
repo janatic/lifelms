@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.lms.model.LearningActivity">
+		<field name="uuid" type="String" />
+		<field name="actId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="title" type="String" />
+		<field name="description" type="String" />
+		<field name="typeId" type="int" />
+		<field name="startdate" type="Date" />
+		<field name="enddate" type="Date" />
+		<field name="precedence" type="int" />
+	</model>
+	<model name="com.liferay.lms.model.LearningActivityResult">
+		<field name="uuid" type="String" />
+		<field name="larId" type="long" />
+		<field name="actId" type="long" />
+		<field name="userId" type="long" />
+		<field name="result" type="long" />
+		<field name="endDate" type="Date" />
+		<field name="latId" type="long" />
+		<field name="comments" type="String" />
+	</model>
+	<model name="com.liferay.lms.model.LearningActivityTry">
+		<field name="uuid" type="String" />
+		<field name="latId" type="long" />
+		<field name="actId" type="long" />
+		<field name="userId" type="long" />
+		<field name="startDate" type="Date" />
+		<field name="result" type="long" />
+		<field name="endDate" type="Date" />
+		<field name="tryData" type="String" />
+		<field name="tryResultData" type="String" />
+		<field name="comments" type="String" />
+	</model>
+	<model name="com.liferay.lms.model.LearningType">
+		<field name="uuid" type="String" />
+		<field name="typeId" type="long" />
+		<field name="name" type="String" />
+		<field name="className" type="String" />
+	</model>
+	<model name="com.liferay.lms.model.TestAnswer">
+		<field name="uuid" type="String" />
+		<field name="answerId" type="long" />
+		<field name="questionId" type="long" />
+		<field name="actId" type="long" />
+		<field name="precedence" type="long" />
+		<field name="answer" type="String" />
+		<field name="isCorrect" type="boolean" />
+	</model>
+	<model name="com.liferay.lms.model.TestQuestion">
+		<field name="uuid" type="String" />
+		<field name="questionId" type="long" />
+		<field name="actId" type="long" />
+		<field name="text" type="String" />
+		<field name="questionType" type="long" />
+	</model>
+</model-hints>
