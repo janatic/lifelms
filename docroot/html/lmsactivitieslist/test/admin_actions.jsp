@@ -7,7 +7,7 @@ ResultRow row =
 TestQuestion question = (TestQuestion)row.getObject();
 long groupId = themeDisplay.getLayout().getGroupId();
 String name = TestQuestion.class.getName();
-String primKey = String.valueOf(question.getPrimaryKey());
+String primKey = String.valueOf(question.getQuestionId());
 String actId = String.valueOf(question.getActId());
 %>
 <liferay-ui:icon-menu>

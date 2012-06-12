@@ -131,6 +131,8 @@ public class LmsActivitiesList extends MVCPortlet
     	
 		actionRequest.setAttribute("activity", learnact);
         actionRequest.setAttribute("questionId",question.getQuestionId());
+        actionRequest.setAttribute("primKey",question.getQuestionId());
+        actionResponse.setRenderParameters(actionRequest.getParameterMap());
 		if(learnact.getTypeId()==0)
 		{
 			
