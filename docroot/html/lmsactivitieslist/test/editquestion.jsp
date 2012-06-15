@@ -61,6 +61,10 @@ modelVar="testanswer">
 name="answer"
 property="answer"
 />
+<liferay-ui:search-container-column-text
+name="answer"
+property="correct"
+/>
 <liferay-ui:search-container-column-jsp
 path="/html/lmsactivitieslist/test/admin_answer_actions.jsp"
 align="right"

@@ -3,6 +3,7 @@ package com.liferay.lms;
 import java.util.Date;
 
 import com.liferay.lms.model.LearningActivity;
+import com.liferay.lms.model.TestAnswer;
 import com.liferay.lms.model.TestQuestion;
 import com.liferay.lms.service.LearningActivityLocalServiceUtil;
 import com.liferay.lms.service.TestAnswerLocalServiceUtil;
@@ -106,10 +107,17 @@ public class LmsActivitiesList extends MVCPortlet
 		throws Exception {
 		System.out.println("anado anser");
 		long questionId=ParamUtil.getLong(actionRequest, "questionId");
-		String answer=ParamUtil.getString(actionRequest, "answer");
+		String answers=ParamUtil.getString(actionRequest, "answer");
 		boolean correct=ParamUtil.getBoolean(actionRequest, "correct");
-	    TestAnswerLocalServiceUtil.addTestAnswer(questionId, answer, correct);
+		TestAnswer answer=TestAnswerLocalServiceUtil.addTestAnswer(questionId, answers, correct);
 		SessionMessages.add(actionRequest, "answer-added-successfully");
+			LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(TestQuestionLocalServiceUtil.getTestQuestion(answer.getQuestionId()).getActId());
+		 actionResponse.setRenderParameter("questionId",Long.toString(answer.getQuestionId()));
+			if(learnact.getTypeId()==0)
+			{
+				
+				actionResponse.setRenderParameter("jspPage", "/html/lmsactivitieslist/test/editquestion.jsp");
+			}
 	}
 	
 	public void addquestion
@@ -132,7 +140,7 @@ public class LmsActivitiesList extends MVCPortlet
 		actionRequest.setAttribute("activity", learnact);
         actionRequest.setAttribute("questionId",question.getQuestionId());
         actionRequest.setAttribute("primKey",question.getQuestionId());
-        actionResponse.setRenderParameters(actionRequest.getParameterMap());
+        actionResponse.setRenderParameter("questionId",Long.toString(question.getQuestionId()));
 		if(learnact.getTypeId()==0)
 		{
 			
@@ -156,6 +164,14 @@ public class LmsActivitiesList extends MVCPortlet
 		question.setText(text);
 		TestQuestionLocalServiceUtil.updateTestQuestion(question);
 		SessionMessages.add(actionRequest, "question-modified-successfully");
+		LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(question.getActId());
+		 actionResponse.setRenderParameter("questionId",Long.toString(questionId));
+			if(learnact.getTypeId()==0)
+			{
+				
+				actionResponse.setRenderParameter("jspPage", "/html/lmsactivitieslist/test/editquestion.jsp");
+			}
+		
 
 	}
 	public void deletequestion
@@ -190,8 +206,16 @@ LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(q
 			WebKeys.THEME_DISPLAY);
 
 		String portletId = PortalUtil.getPortletId(actionRequest);
+		TestAnswer answer=TestAnswerLocalServiceUtil.getTestAnswer(ParamUtil.getLong(actionRequest,"answerId"));
+		LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(TestQuestionLocalServiceUtil.getTestQuestion(answer.getQuestionId()).getActId());
 		TestAnswerLocalServiceUtil.deleteTestAnswer(ParamUtil.getLong(actionRequest,"answerId"));
 		SessionMessages.add(actionRequest, "answer-deleted-successfully");
+		 actionResponse.setRenderParameter("questionId",Long.toString(answer.getQuestionId()));
+			if(learnact.getTypeId()==0)
+			{
+				
+				actionResponse.setRenderParameter("jspPage", "/html/lmsactivitieslist/test/editquestion.jsp");
+			}
 	
 	}
 
