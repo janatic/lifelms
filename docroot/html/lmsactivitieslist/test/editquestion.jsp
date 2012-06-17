@@ -29,7 +29,8 @@ TestQuestion question = TestQuestionLocalServiceUtil.getTestQuestion(ParamUtil.g
 </aui:form>
 <%
 java.util.List<TestAnswer> testanswers=TestAnswerLocalServiceUtil.getTestAnswersByQuestionId(question.getQuestionId());
-
+String iconChecked = "checked";
+String iconUnchecked = "unchecked";
 %>
 
 
@@ -50,6 +51,7 @@ searchContainer.getEnd());
 total = testanswers.size();
 pageContext.setAttribute("results", results);
 pageContext.setAttribute("total", total);
+
 %>
 </liferay-ui:search-container-results>
 <liferay-ui:search-container-row
@@ -58,13 +60,18 @@ keyProperty="answerId"
 modelVar="testanswer">
 
 <liferay-ui:search-container-column-text
-name="answer"
-property="answer"
+name="correct"
+value="<%=testanswer.getIsCorrect()? \"yes\":\"no\" %>"
 />
-<liferay-ui:search-container-column-text
-name="answer"
-property="correct"
-/>
+		<liferay-ui:search-container-column-text name="correct"	align="center" >
+			 <%
+ 				String answericon = iconUnchecked;
+  				if (testanswer.getIsCorrect()) {
+  					answericon = iconChecked;
+ 				}
+ 			  %>
+			<liferay-ui:icon image="<%=answericon %>"/>
+		</liferay-ui:search-container-column-text>
 <liferay-ui:search-container-column-jsp
 path="/html/lmsactivitieslist/test/admin_answer_actions.jsp"
 align="right"
