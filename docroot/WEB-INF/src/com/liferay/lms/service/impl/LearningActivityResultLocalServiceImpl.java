@@ -14,7 +14,11 @@
 
 package com.liferay.lms.service.impl;
 
+import com.liferay.lms.model.LearningActivityResult;
+import com.liferay.lms.model.LearningActivityTry;
 import com.liferay.lms.service.base.LearningActivityResultLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
+
 
 /**
  * The implementation of the learning activity result local service.
@@ -37,4 +41,45 @@ import com.liferay.lms.service.base.LearningActivityResultLocalServiceBaseImpl;
  */
 public class LearningActivityResultLocalServiceImpl
 	extends LearningActivityResultLocalServiceBaseImpl {
+	public LearningActivityResult update(LearningActivityTry learningActivityTry) throws SystemException
+	{
+		LearningActivityResult learningActivityResult=null;
+		long actId=learningActivityTry.getActId();
+		long userId=learningActivityTry.getUserId();
+		if(!existsLearningActivityResult(actId, userId))
+		{	
+			learningActivityResult=
+				learningActivityResultPersistence.create(counterLocalService.increment(
+						LearningActivityResult.class.getName()));
+			learningActivityResult.setStartDate(learningActivityTry.getStartDate());
+			learningActivityResult.setActId(actId);
+			learningActivityResult.setUserId(userId);
+		}
+		else
+		{
+			learningActivityResult=learningActivityResultPersistence.fetchByact_user(actId, userId);
+		}
+		learningActivityResult.setEndDate(learningActivityTry.getEndDate());
+		learningActivityResult.setResult(learningActivityTry.getResult());
+		learningActivityResult.setComments(learningActivityTry.getComments());
+		learningActivityResultPersistence.update(learningActivityResult, true);
+		return learningActivityResult;
+		
+	}
+	public boolean existsLearningActivityResult(long actId,long userId) throws SystemException
+	{
+		if(learningActivityResultPersistence.countByact_user(actId, userId)>0)
+		{
+			return true;
+		}
+		else
+		{
+		 
+			return false;
+		}
+	}
+	public LearningActivityResult getByActIdAndUserId(long actId,long userId) throws SystemException
+	{
+		return learningActivityResultPersistence.fetchByact_user(actId, userId);
+	}
 }

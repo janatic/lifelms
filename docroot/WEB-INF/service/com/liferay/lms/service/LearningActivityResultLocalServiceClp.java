@@ -89,6 +89,15 @@ public class LearningActivityResultLocalServiceClp
 
 		_setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
 				"setBeanIdentifier", java.lang.String.class);
+
+		_updateMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+				"update", com.liferay.lms.model.LearningActivityTry.class);
+
+		_existsLearningActivityResultMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+				"existsLearningActivityResult", long.class, long.class);
+
+		_getByActIdAndUserIdMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+				"getByActIdAndUserId", long.class, long.class);
 	}
 
 	public com.liferay.lms.model.LearningActivityResult addLearningActivityResult(
@@ -555,6 +564,89 @@ public class LearningActivityResultLocalServiceClp
 		}
 	}
 
+	public com.liferay.lms.model.LearningActivityResult update(
+		com.liferay.lms.model.LearningActivityTry learningActivityTry)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		MethodHandler methodHandler = new MethodHandler(_updateMethodKey17,
+				ClpSerializer.translateInput(learningActivityTry));
+
+		try {
+			returnObj = _classLoaderProxy.invoke(methodHandler);
+		}
+		catch (Throwable t) {
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.lms.model.LearningActivityResult)ClpSerializer.translateOutput(returnObj);
+	}
+
+	public boolean existsLearningActivityResult(long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		MethodHandler methodHandler = new MethodHandler(_existsLearningActivityResultMethodKey18,
+				actId, userId);
+
+		try {
+			returnObj = _classLoaderProxy.invoke(methodHandler);
+		}
+		catch (Throwable t) {
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Boolean)returnObj).booleanValue();
+	}
+
+	public com.liferay.lms.model.LearningActivityResult getByActIdAndUserId(
+		long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		MethodHandler methodHandler = new MethodHandler(_getByActIdAndUserIdMethodKey19,
+				actId, userId);
+
+		try {
+			returnObj = _classLoaderProxy.invoke(methodHandler);
+		}
+		catch (Throwable t) {
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.lms.model.LearningActivityResult)ClpSerializer.translateOutput(returnObj);
+	}
+
 	public ClassLoaderProxy getClassLoaderProxy() {
 		return _classLoaderProxy;
 	}
@@ -577,4 +669,7 @@ public class LearningActivityResultLocalServiceClp
 	private MethodKey _updateLearningActivityResultMethodKey14;
 	private MethodKey _getBeanIdentifierMethodKey15;
 	private MethodKey _setBeanIdentifierMethodKey16;
+	private MethodKey _updateMethodKey17;
+	private MethodKey _existsLearningActivityResultMethodKey18;
+	private MethodKey _getByActIdAndUserIdMethodKey19;
 }

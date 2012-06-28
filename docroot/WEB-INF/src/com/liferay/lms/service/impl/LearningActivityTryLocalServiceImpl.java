@@ -15,7 +15,9 @@
 package com.liferay.lms.service.impl;
 
 import com.liferay.lms.model.LearningActivity;
+import com.liferay.lms.model.LearningActivityResult;
 import com.liferay.lms.model.LearningActivityTry;
+import com.liferay.lms.service.LearningActivityResultLocalServiceUtil;
 import com.liferay.lms.service.base.LearningActivityTryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
@@ -41,12 +43,32 @@ import com.liferay.portal.service.ServiceContext;
  */
 public class LearningActivityTryLocalServiceImpl
 	extends LearningActivityTryLocalServiceBaseImpl {
+	@Override
+	public LearningActivityTry updateLearningActivityTry(
+			LearningActivityTry learningActivityTry) throws SystemException {
+		
+		return updateLearningActivityTry(learningActivityTry,true);
+	}
+
+	@Override
+	public LearningActivityTry updateLearningActivityTry(
+			LearningActivityTry learningActivityTry, boolean merge)
+			throws SystemException {
+		
+		if(learningActivityTry.getEndDate()!=null)
+		{
+			LearningActivityResultLocalServiceUtil.update(learningActivityTry)	;
+		}
+		return super.updateLearningActivityTry(learningActivityTry, merge);
+	}
+
 	public LearningActivityTry createLearningActivityTry(long actId,ServiceContext serviceContext) throws SystemException
 	{
 		LearningActivityTry larnt =
 			learningActivityTryPersistence.create(counterLocalService.increment(
 					LearningActivityTry.class.getName()));
 		larnt.setUserId(serviceContext.getUserId());
+		larnt.setActId(actId);
 		larnt.setStartDate(new java.util.Date(System.currentTimeMillis()));
 		learningActivityTryPersistence.update(larnt, true);
 		return larnt;

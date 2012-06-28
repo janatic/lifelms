@@ -169,6 +169,24 @@ public class LearningActivityResultWrapper implements LearningActivityResult,
 	}
 
 	/**
+	* Returns the start date of this learning activity result.
+	*
+	* @return the start date of this learning activity result
+	*/
+	public java.util.Date getStartDate() {
+		return _learningActivityResult.getStartDate();
+	}
+
+	/**
+	* Sets the start date of this learning activity result.
+	*
+	* @param startDate the start date of this learning activity result
+	*/
+	public void setStartDate(java.util.Date startDate) {
+		_learningActivityResult.setStartDate(startDate);
+	}
+
+	/**
 	* Returns the end date of this learning activity result.
 	*
 	* @return the end date of this learning activity result

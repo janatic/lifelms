@@ -108,6 +108,14 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 		_result = result;
 	}
 
+	public Date getStartDate() {
+		return _startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		_startDate = startDate;
+	}
+
 	public Date getEndDate() {
 		return _endDate;
 	}
@@ -157,6 +165,7 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 		clone.setActId(getActId());
 		clone.setUserId(getUserId());
 		clone.setResult(getResult());
+		clone.setStartDate(getStartDate());
 		clone.setEndDate(getEndDate());
 		clone.setLatId(getLatId());
 		clone.setComments(getComments());
@@ -210,7 +219,7 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(17);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -222,6 +231,8 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 		sb.append(getUserId());
 		sb.append(", result=");
 		sb.append(getResult());
+		sb.append(", startDate=");
+		sb.append(getStartDate());
 		sb.append(", endDate=");
 		sb.append(getEndDate());
 		sb.append(", latId=");
@@ -234,7 +245,7 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(28);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.lms.model.LearningActivityResult");
@@ -261,6 +272,10 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 		sb.append(getResult());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>startDate</column-name><column-value><![CDATA[");
+		sb.append(getStartDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>endDate</column-name><column-value><![CDATA[");
 		sb.append(getEndDate());
 		sb.append("]]></column-value></column>");
@@ -284,6 +299,7 @@ public class LearningActivityResultClp extends BaseModelImpl<LearningActivityRes
 	private long _userId;
 	private String _userUuid;
 	private long _result;
+	private Date _startDate;
 	private Date _endDate;
 	private long _latId;
 	private String _comments;

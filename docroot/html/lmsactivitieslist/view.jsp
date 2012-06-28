@@ -6,18 +6,23 @@
 <portlet:param name="jspPage" value="/html/lmsactivitieslist/newactivity.jsp"></portlet:param>
 </portlet:renderURL>
 <div class="portlet-toolbar search-form">
+<%
+java.util.List<LearningActivity> activities=LearningActivityLocalServiceUtil.getLearningActivitiesOfGroup(scopeGroupId);
+
+if( permissionChecker.hasPermission(themeDisplay.getScopeGroupId(),  LearningActivity.class.getName(),0,ActionKeys.ADD_ENTRY))
+{
+%>
 <liferay-ui:icon
 image="add"
 label="<%= true %>"
 message="new"
 url='<%= newactivityURL %>'
 />
-
 <%
-java.util.List<LearningActivity> activities=LearningActivityLocalServiceUtil.getLearningActivitiesOfGroup(scopeGroupId);
+}
 %>
 <liferay-ui:search-container emptyResultsMessage="there-are-no-activities"
- delta="5">
+ delta="10">
 <liferay-ui:search-container-results>
 <%
 results = ListUtil.subList(activities, searchContainer.getStart(),

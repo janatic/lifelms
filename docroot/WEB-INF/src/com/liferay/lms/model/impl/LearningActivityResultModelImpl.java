@@ -69,11 +69,12 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 			{ "actId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "result", Types.BIGINT },
+			{ "startDate", Types.TIMESTAMP },
 			{ "endDate", Types.TIMESTAMP },
 			{ "latId", Types.BIGINT },
 			{ "comments", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lms_LearningActivityResult (uuid_ VARCHAR(75) null,larId LONG not null primary key,actId LONG,userId LONG,result LONG,endDate DATE null,latId LONG,comments VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table Lms_LearningActivityResult (uuid_ VARCHAR(75) null,larId LONG not null primary key,actId LONG,userId LONG,result LONG,startDate DATE null,endDate DATE null,latId LONG,comments VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table Lms_LearningActivityResult";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -87,7 +88,9 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.lms.model.LearningActivityResult"),
 			true);
-	public static long UUID_COLUMN_BITMASK = 1L;
+	public static long ACTID_COLUMN_BITMASK = 1L;
+	public static long USERID_COLUMN_BITMASK = 2L;
+	public static long UUID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -104,6 +107,7 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 		model.setActId(soapModel.getActId());
 		model.setUserId(soapModel.getUserId());
 		model.setResult(soapModel.getResult());
+		model.setStartDate(soapModel.getStartDate());
 		model.setEndDate(soapModel.getEndDate());
 		model.setLatId(soapModel.getLatId());
 		model.setComments(soapModel.getComments());
@@ -195,7 +199,19 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 	}
 
 	public void setActId(long actId) {
+		_columnBitmask |= ACTID_COLUMN_BITMASK;
+
+		if (!_setOriginalActId) {
+			_setOriginalActId = true;
+
+			_originalActId = _actId;
+		}
+
 		_actId = actId;
+	}
+
+	public long getOriginalActId() {
+		return _originalActId;
 	}
 
 	@JSON
@@ -204,6 +220,14 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 	}
 
 	public void setUserId(long userId) {
+		_columnBitmask |= USERID_COLUMN_BITMASK;
+
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -215,6 +239,10 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 		_userUuid = userUuid;
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	public long getResult() {
 		return _result;
@@ -222,6 +250,15 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 
 	public void setResult(long result) {
 		_result = result;
+	}
+
+	@JSON
+	public Date getStartDate() {
+		return _startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		_startDate = startDate;
 	}
 
 	@JSON
@@ -295,6 +332,7 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 		learningActivityResultImpl.setActId(getActId());
 		learningActivityResultImpl.setUserId(getUserId());
 		learningActivityResultImpl.setResult(getResult());
+		learningActivityResultImpl.setStartDate(getStartDate());
 		learningActivityResultImpl.setEndDate(getEndDate());
 		learningActivityResultImpl.setLatId(getLatId());
 		learningActivityResultImpl.setComments(getComments());
@@ -354,6 +392,14 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 
 		learningActivityResultModelImpl._originalUuid = learningActivityResultModelImpl._uuid;
 
+		learningActivityResultModelImpl._originalActId = learningActivityResultModelImpl._actId;
+
+		learningActivityResultModelImpl._setOriginalActId = false;
+
+		learningActivityResultModelImpl._originalUserId = learningActivityResultModelImpl._userId;
+
+		learningActivityResultModelImpl._setOriginalUserId = false;
+
 		learningActivityResultModelImpl._columnBitmask = 0;
 	}
 
@@ -376,6 +422,15 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 		learningActivityResultCacheModel.userId = getUserId();
 
 		learningActivityResultCacheModel.result = getResult();
+
+		Date startDate = getStartDate();
+
+		if (startDate != null) {
+			learningActivityResultCacheModel.startDate = startDate.getTime();
+		}
+		else {
+			learningActivityResultCacheModel.startDate = Long.MIN_VALUE;
+		}
 
 		Date endDate = getEndDate();
 
@@ -401,7 +456,7 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(17);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -413,6 +468,8 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 		sb.append(getUserId());
 		sb.append(", result=");
 		sb.append(getResult());
+		sb.append(", startDate=");
+		sb.append(getStartDate());
 		sb.append(", endDate=");
 		sb.append(getEndDate());
 		sb.append(", latId=");
@@ -425,7 +482,7 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(28);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.lms.model.LearningActivityResult");
@@ -450,6 +507,10 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 		sb.append(
 			"<column><column-name>result</column-name><column-value><![CDATA[");
 		sb.append(getResult());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>startDate</column-name><column-value><![CDATA[");
+		sb.append(getStartDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>endDate</column-name><column-value><![CDATA[");
@@ -477,9 +538,14 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 	private String _originalUuid;
 	private long _larId;
 	private long _actId;
+	private long _originalActId;
+	private boolean _setOriginalActId;
 	private long _userId;
 	private String _userUuid;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private long _result;
+	private Date _startDate;
 	private Date _endDate;
 	private long _latId;
 	private String _comments;

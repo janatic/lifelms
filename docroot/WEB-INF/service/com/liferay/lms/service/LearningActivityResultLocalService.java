@@ -235,4 +235,16 @@ public interface LearningActivityResultLocalService
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
 	public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+	public com.liferay.lms.model.LearningActivityResult update(
+		com.liferay.lms.model.LearningActivityTry learningActivityTry)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean existsLearningActivityResult(long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.lms.model.LearningActivityResult getByActIdAndUserId(
+		long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

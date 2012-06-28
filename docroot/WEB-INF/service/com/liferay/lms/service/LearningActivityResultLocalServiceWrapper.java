@@ -258,6 +258,25 @@ public class LearningActivityResultLocalServiceWrapper
 		_learningActivityResultLocalService.setBeanIdentifier(beanIdentifier);
 	}
 
+	public com.liferay.lms.model.LearningActivityResult update(
+		com.liferay.lms.model.LearningActivityTry learningActivityTry)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityResultLocalService.update(learningActivityTry);
+	}
+
+	public boolean existsLearningActivityResult(long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityResultLocalService.existsLearningActivityResult(actId,
+			userId);
+	}
+
+	public com.liferay.lms.model.LearningActivityResult getByActIdAndUserId(
+		long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityResultLocalService.getByActIdAndUserId(actId,
+			userId);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

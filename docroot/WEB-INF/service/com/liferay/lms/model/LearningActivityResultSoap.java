@@ -37,6 +37,7 @@ public class LearningActivityResultSoap implements Serializable {
 		soapModel.setActId(model.getActId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setResult(model.getResult());
+		soapModel.setStartDate(model.getStartDate());
 		soapModel.setEndDate(model.getEndDate());
 		soapModel.setLatId(model.getLatId());
 		soapModel.setComments(model.getComments());
@@ -135,6 +136,14 @@ public class LearningActivityResultSoap implements Serializable {
 		_result = result;
 	}
 
+	public Date getStartDate() {
+		return _startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		_startDate = startDate;
+	}
+
 	public Date getEndDate() {
 		return _endDate;
 	}
@@ -164,6 +173,7 @@ public class LearningActivityResultSoap implements Serializable {
 	private long _actId;
 	private long _userId;
 	private long _result;
+	private Date _startDate;
 	private Date _endDate;
 	private long _latId;
 	private String _comments;

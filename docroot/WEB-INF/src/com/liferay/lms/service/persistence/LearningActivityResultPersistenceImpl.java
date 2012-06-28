@@ -99,6 +99,57 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] { String.class.getName() });
+	public static final FinderPath FINDER_PATH_FETCH_BY_ACT_USER = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED,
+			LearningActivityResultImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByact_user",
+			new String[] { Long.class.getName(), Long.class.getName() },
+			LearningActivityResultModelImpl.ACTID_COLUMN_BITMASK |
+			LearningActivityResultModelImpl.USERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_ACT_USER = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByact_user",
+			new String[] { Long.class.getName(), Long.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_AC = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED,
+			LearningActivityResultImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByac",
+			new String[] {
+				Long.class.getName(),
+				
+			"java.lang.Integer", "java.lang.Integer",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AC = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED,
+			LearningActivityResultImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByac",
+			new String[] { Long.class.getName() },
+			LearningActivityResultModelImpl.ACTID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_AC = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByac",
+			new String[] { Long.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USER = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED,
+			LearningActivityResultImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByuser",
+			new String[] {
+				Long.class.getName(),
+				
+			"java.lang.Integer", "java.lang.Integer",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USER = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED,
+			LearningActivityResultImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByuser",
+			new String[] { Long.class.getName() },
+			LearningActivityResultModelImpl.USERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_USER = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
+			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByuser",
+			new String[] { Long.class.getName() });
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
 			LearningActivityResultModelImpl.FINDER_CACHE_ENABLED,
 			LearningActivityResultImpl.class,
@@ -120,6 +171,12 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 		EntityCacheUtil.putResult(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
 			LearningActivityResultImpl.class,
 			learningActivityResult.getPrimaryKey(), learningActivityResult);
+
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_ACT_USER,
+			new Object[] {
+				Long.valueOf(learningActivityResult.getActId()),
+				Long.valueOf(learningActivityResult.getUserId())
+			}, learningActivityResult);
 
 		learningActivityResult.resetOriginalValues();
 	}
@@ -179,6 +236,8 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		clearUniqueFindersCache(learningActivityResult);
 	}
 
 	@Override
@@ -190,7 +249,18 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 			EntityCacheUtil.removeResult(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
 				LearningActivityResultImpl.class,
 				learningActivityResult.getPrimaryKey());
+
+			clearUniqueFindersCache(learningActivityResult);
 		}
+	}
+
+	protected void clearUniqueFindersCache(
+		LearningActivityResult learningActivityResult) {
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_ACT_USER,
+			new Object[] {
+				Long.valueOf(learningActivityResult.getActId()),
+				Long.valueOf(learningActivityResult.getUserId())
+			});
 	}
 
 	/**
@@ -346,11 +416,75 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
 					args);
 			}
+
+			if ((learningActivityResultModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AC.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						Long.valueOf(learningActivityResultModelImpl.getOriginalActId())
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AC, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AC,
+					args);
+
+				args = new Object[] {
+						Long.valueOf(learningActivityResultModelImpl.getActId())
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AC, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AC,
+					args);
+			}
+
+			if ((learningActivityResultModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USER.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						Long.valueOf(learningActivityResultModelImpl.getOriginalUserId())
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USER, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USER,
+					args);
+
+				args = new Object[] {
+						Long.valueOf(learningActivityResultModelImpl.getUserId())
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USER, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USER,
+					args);
+			}
 		}
 
 		EntityCacheUtil.putResult(LearningActivityResultModelImpl.ENTITY_CACHE_ENABLED,
 			LearningActivityResultImpl.class,
 			learningActivityResult.getPrimaryKey(), learningActivityResult);
+
+		if (isNew) {
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_ACT_USER,
+				new Object[] {
+					Long.valueOf(learningActivityResult.getActId()),
+					Long.valueOf(learningActivityResult.getUserId())
+				}, learningActivityResult);
+		}
+		else {
+			if ((learningActivityResultModelImpl.getColumnBitmask() &
+					FINDER_PATH_FETCH_BY_ACT_USER.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						Long.valueOf(learningActivityResultModelImpl.getOriginalActId()),
+						Long.valueOf(learningActivityResultModelImpl.getOriginalUserId())
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ACT_USER, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_ACT_USER, args);
+
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_ACT_USER,
+					new Object[] {
+						Long.valueOf(learningActivityResult.getActId()),
+						Long.valueOf(learningActivityResult.getUserId())
+					}, learningActivityResult);
+			}
+		}
 
 		return learningActivityResult;
 	}
@@ -371,6 +505,7 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 		learningActivityResultImpl.setActId(learningActivityResult.getActId());
 		learningActivityResultImpl.setUserId(learningActivityResult.getUserId());
 		learningActivityResultImpl.setResult(learningActivityResult.getResult());
+		learningActivityResultImpl.setStartDate(learningActivityResult.getStartDate());
 		learningActivityResultImpl.setEndDate(learningActivityResult.getEndDate());
 		learningActivityResultImpl.setLatId(learningActivityResult.getLatId());
 		learningActivityResultImpl.setComments(learningActivityResult.getComments());
@@ -841,6 +976,822 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 	}
 
 	/**
+	 * Returns the learning activity result where actId = &#63; and userId = &#63; or throws a {@link com.liferay.lms.NoSuchLearningActivityResultException} if it could not be found.
+	 *
+	 * @param actId the act ID
+	 * @param userId the user ID
+	 * @return the matching learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult findByact_user(long actId, long userId)
+		throws NoSuchLearningActivityResultException, SystemException {
+		LearningActivityResult learningActivityResult = fetchByact_user(actId,
+				userId);
+
+		if (learningActivityResult == null) {
+			StringBundler msg = new StringBundler(6);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("actId=");
+			msg.append(actId);
+
+			msg.append(", userId=");
+			msg.append(userId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(msg.toString());
+			}
+
+			throw new NoSuchLearningActivityResultException(msg.toString());
+		}
+
+		return learningActivityResult;
+	}
+
+	/**
+	 * Returns the learning activity result where actId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param actId the act ID
+	 * @param userId the user ID
+	 * @return the matching learning activity result, or <code>null</code> if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult fetchByact_user(long actId, long userId)
+		throws SystemException {
+		return fetchByact_user(actId, userId, true);
+	}
+
+	/**
+	 * Returns the learning activity result where actId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param actId the act ID
+	 * @param userId the user ID
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching learning activity result, or <code>null</code> if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult fetchByact_user(long actId, long userId,
+		boolean retrieveFromCache) throws SystemException {
+		Object[] finderArgs = new Object[] { actId, userId };
+
+		Object result = null;
+
+		if (retrieveFromCache) {
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_ACT_USER,
+					finderArgs, this);
+		}
+
+		if (result == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_SELECT_LEARNINGACTIVITYRESULT_WHERE);
+
+			query.append(_FINDER_COLUMN_ACT_USER_ACTID_2);
+
+			query.append(_FINDER_COLUMN_ACT_USER_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(actId);
+
+				qPos.add(userId);
+
+				List<LearningActivityResult> list = q.list();
+
+				result = list;
+
+				LearningActivityResult learningActivityResult = null;
+
+				if (list.isEmpty()) {
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_ACT_USER,
+						finderArgs, list);
+				}
+				else {
+					learningActivityResult = list.get(0);
+
+					cacheResult(learningActivityResult);
+
+					if ((learningActivityResult.getActId() != actId) ||
+							(learningActivityResult.getUserId() != userId)) {
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_ACT_USER,
+							finderArgs, learningActivityResult);
+					}
+				}
+
+				return learningActivityResult;
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (result == null) {
+					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_ACT_USER,
+						finderArgs);
+				}
+
+				closeSession(session);
+			}
+		}
+		else {
+			if (result instanceof List<?>) {
+				return null;
+			}
+			else {
+				return (LearningActivityResult)result;
+			}
+		}
+	}
+
+	/**
+	 * Returns all the learning activity results where actId = &#63;.
+	 *
+	 * @param actId the act ID
+	 * @return the matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivityResult> findByac(long actId)
+		throws SystemException {
+		return findByac(actId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the learning activity results where actId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param actId the act ID
+	 * @param start the lower bound of the range of learning activity results
+	 * @param end the upper bound of the range of learning activity results (not inclusive)
+	 * @return the range of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivityResult> findByac(long actId, int start, int end)
+		throws SystemException {
+		return findByac(actId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the learning activity results where actId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param actId the act ID
+	 * @param start the lower bound of the range of learning activity results
+	 * @param end the upper bound of the range of learning activity results (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivityResult> findByac(long actId, int start,
+		int end, OrderByComparator orderByComparator) throws SystemException {
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AC;
+			finderArgs = new Object[] { actId };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_AC;
+			finderArgs = new Object[] { actId, start, end, orderByComparator };
+		}
+
+		List<LearningActivityResult> list = (List<LearningActivityResult>)FinderCacheUtil.getResult(finderPath,
+				finderArgs, this);
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(2);
+			}
+
+			query.append(_SQL_SELECT_LEARNINGACTIVITYRESULT_WHERE);
+
+			query.append(_FINDER_COLUMN_AC_ACTID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(actId);
+
+				list = (List<LearningActivityResult>)QueryUtil.list(q,
+						getDialect(), start, end);
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (list == null) {
+					FinderCacheUtil.removeResult(finderPath, finderArgs);
+				}
+				else {
+					cacheResult(list);
+
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
+
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first learning activity result in the ordered set where actId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param actId the act ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult findByac_First(long actId,
+		OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityResultException, SystemException {
+		List<LearningActivityResult> list = findByac(actId, 0, 1,
+				orderByComparator);
+
+		if (list.isEmpty()) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("actId=");
+			msg.append(actId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			throw new NoSuchLearningActivityResultException(msg.toString());
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Returns the last learning activity result in the ordered set where actId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param actId the act ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult findByac_Last(long actId,
+		OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityResultException, SystemException {
+		int count = countByac(actId);
+
+		List<LearningActivityResult> list = findByac(actId, count - 1, count,
+				orderByComparator);
+
+		if (list.isEmpty()) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("actId=");
+			msg.append(actId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			throw new NoSuchLearningActivityResultException(msg.toString());
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Returns the learning activity results before and after the current learning activity result in the ordered set where actId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param larId the primary key of the current learning activity result
+	 * @param actId the act ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a learning activity result with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult[] findByac_PrevAndNext(long larId,
+		long actId, OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityResultException, SystemException {
+		LearningActivityResult learningActivityResult = findByPrimaryKey(larId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LearningActivityResult[] array = new LearningActivityResultImpl[3];
+
+			array[0] = getByac_PrevAndNext(session, learningActivityResult,
+					actId, orderByComparator, true);
+
+			array[1] = learningActivityResult;
+
+			array[2] = getByac_PrevAndNext(session, learningActivityResult,
+					actId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LearningActivityResult getByac_PrevAndNext(Session session,
+		LearningActivityResult learningActivityResult, long actId,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_LEARNINGACTIVITYRESULT_WHERE);
+
+		query.append(_FINDER_COLUMN_AC_ACTID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(actId);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(learningActivityResult);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<LearningActivityResult> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns all the learning activity results where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @return the matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivityResult> findByuser(long userId)
+		throws SystemException {
+		return findByuser(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the learning activity results where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of learning activity results
+	 * @param end the upper bound of the range of learning activity results (not inclusive)
+	 * @return the range of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivityResult> findByuser(long userId, int start,
+		int end) throws SystemException {
+		return findByuser(userId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the learning activity results where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of learning activity results
+	 * @param end the upper bound of the range of learning activity results (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivityResult> findByuser(long userId, int start,
+		int end, OrderByComparator orderByComparator) throws SystemException {
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USER;
+			finderArgs = new Object[] { userId };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_USER;
+			finderArgs = new Object[] { userId, start, end, orderByComparator };
+		}
+
+		List<LearningActivityResult> list = (List<LearningActivityResult>)FinderCacheUtil.getResult(finderPath,
+				finderArgs, this);
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(2);
+			}
+
+			query.append(_SQL_SELECT_LEARNINGACTIVITYRESULT_WHERE);
+
+			query.append(_FINDER_COLUMN_USER_USERID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				list = (List<LearningActivityResult>)QueryUtil.list(q,
+						getDialect(), start, end);
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (list == null) {
+					FinderCacheUtil.removeResult(finderPath, finderArgs);
+				}
+				else {
+					cacheResult(list);
+
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
+
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first learning activity result in the ordered set where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult findByuser_First(long userId,
+		OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityResultException, SystemException {
+		List<LearningActivityResult> list = findByuser(userId, 0, 1,
+				orderByComparator);
+
+		if (list.isEmpty()) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("userId=");
+			msg.append(userId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			throw new NoSuchLearningActivityResultException(msg.toString());
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Returns the last learning activity result in the ordered set where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a matching learning activity result could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult findByuser_Last(long userId,
+		OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityResultException, SystemException {
+		int count = countByuser(userId);
+
+		List<LearningActivityResult> list = findByuser(userId, count - 1,
+				count, orderByComparator);
+
+		if (list.isEmpty()) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("userId=");
+			msg.append(userId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			throw new NoSuchLearningActivityResultException(msg.toString());
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Returns the learning activity results before and after the current learning activity result in the ordered set where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param larId the primary key of the current learning activity result
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next learning activity result
+	 * @throws com.liferay.lms.NoSuchLearningActivityResultException if a learning activity result with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivityResult[] findByuser_PrevAndNext(long larId,
+		long userId, OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityResultException, SystemException {
+		LearningActivityResult learningActivityResult = findByPrimaryKey(larId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LearningActivityResult[] array = new LearningActivityResultImpl[3];
+
+			array[0] = getByuser_PrevAndNext(session, learningActivityResult,
+					userId, orderByComparator, true);
+
+			array[1] = learningActivityResult;
+
+			array[2] = getByuser_PrevAndNext(session, learningActivityResult,
+					userId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LearningActivityResult getByuser_PrevAndNext(Session session,
+		LearningActivityResult learningActivityResult, long userId,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_LEARNINGACTIVITYRESULT_WHERE);
+
+		query.append(_FINDER_COLUMN_USER_USERID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(userId);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(learningActivityResult);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<LearningActivityResult> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
 	 * Returns all the learning activity results.
 	 *
 	 * @return the learning activity results
@@ -968,6 +1919,45 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 	}
 
 	/**
+	 * Removes the learning activity result where actId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param actId the act ID
+	 * @param userId the user ID
+	 * @throws SystemException if a system exception occurred
+	 */
+	public void removeByact_user(long actId, long userId)
+		throws NoSuchLearningActivityResultException, SystemException {
+		LearningActivityResult learningActivityResult = findByact_user(actId,
+				userId);
+
+		remove(learningActivityResult);
+	}
+
+	/**
+	 * Removes all the learning activity results where actId = &#63; from the database.
+	 *
+	 * @param actId the act ID
+	 * @throws SystemException if a system exception occurred
+	 */
+	public void removeByac(long actId) throws SystemException {
+		for (LearningActivityResult learningActivityResult : findByac(actId)) {
+			remove(learningActivityResult);
+		}
+	}
+
+	/**
+	 * Removes all the learning activity results where userId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @throws SystemException if a system exception occurred
+	 */
+	public void removeByuser(long userId) throws SystemException {
+		for (LearningActivityResult learningActivityResult : findByuser(userId)) {
+			remove(learningActivityResult);
+		}
+	}
+
+	/**
 	 * Removes all the learning activity results from the database.
 	 *
 	 * @throws SystemException if a system exception occurred
@@ -1034,6 +2024,171 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 				}
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID,
+					finderArgs, count);
+
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	/**
+	 * Returns the number of learning activity results where actId = &#63; and userId = &#63;.
+	 *
+	 * @param actId the act ID
+	 * @param userId the user ID
+	 * @return the number of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int countByact_user(long actId, long userId)
+		throws SystemException {
+		Object[] finderArgs = new Object[] { actId, userId };
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ACT_USER,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_LEARNINGACTIVITYRESULT_WHERE);
+
+			query.append(_FINDER_COLUMN_ACT_USER_ACTID_2);
+
+			query.append(_FINDER_COLUMN_ACT_USER_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(actId);
+
+				qPos.add(userId);
+
+				count = (Long)q.uniqueResult();
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (count == null) {
+					count = Long.valueOf(0);
+				}
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_ACT_USER,
+					finderArgs, count);
+
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	/**
+	 * Returns the number of learning activity results where actId = &#63;.
+	 *
+	 * @param actId the act ID
+	 * @return the number of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int countByac(long actId) throws SystemException {
+		Object[] finderArgs = new Object[] { actId };
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_AC,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_LEARNINGACTIVITYRESULT_WHERE);
+
+			query.append(_FINDER_COLUMN_AC_ACTID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(actId);
+
+				count = (Long)q.uniqueResult();
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (count == null) {
+					count = Long.valueOf(0);
+				}
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_AC, finderArgs,
+					count);
+
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	/**
+	 * Returns the number of learning activity results where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @return the number of matching learning activity results
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int countByuser(long userId) throws SystemException {
+		Object[] finderArgs = new Object[] { userId };
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USER,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_LEARNINGACTIVITYRESULT_WHERE);
+
+			query.append(_FINDER_COLUMN_USER_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				count = (Long)q.uniqueResult();
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (count == null) {
+					count = Long.valueOf(0);
+				}
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USER,
 					finderArgs, count);
 
 				closeSession(session);
@@ -1135,6 +2290,10 @@ public class LearningActivityResultPersistenceImpl extends BasePersistenceImpl<L
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "learningActivityResult.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "learningActivityResult.uuid = ?";
 	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(learningActivityResult.uuid IS NULL OR learningActivityResult.uuid = ?)";
+	private static final String _FINDER_COLUMN_ACT_USER_ACTID_2 = "learningActivityResult.actId = ? AND ";
+	private static final String _FINDER_COLUMN_ACT_USER_USERID_2 = "learningActivityResult.userId = ?";
+	private static final String _FINDER_COLUMN_AC_ACTID_2 = "learningActivityResult.actId = ?";
+	private static final String _FINDER_COLUMN_USER_USERID_2 = "learningActivityResult.userId = ?";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "learningActivityResult.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LearningActivityResult exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LearningActivityResult exists with the key {";

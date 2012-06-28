@@ -262,6 +262,23 @@ public class LearningActivityResultLocalServiceUtil {
 		getService().setBeanIdentifier(beanIdentifier);
 	}
 
+	public static com.liferay.lms.model.LearningActivityResult update(
+		com.liferay.lms.model.LearningActivityTry learningActivityTry)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().update(learningActivityTry);
+	}
+
+	public static boolean existsLearningActivityResult(long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().existsLearningActivityResult(actId, userId);
+	}
+
+	public static com.liferay.lms.model.LearningActivityResult getByActIdAndUserId(
+		long actId, long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getByActIdAndUserId(actId, userId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

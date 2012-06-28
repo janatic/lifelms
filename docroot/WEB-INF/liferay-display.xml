@@ -8,5 +8,6 @@
 	<category name="LMS">
 		<portlet id="lmsactivitieslist"></portlet>
 		<portlet id="execactivity"></portlet>
+		<portlet id="gradebook"></portlet>
 	</category>
 </display>

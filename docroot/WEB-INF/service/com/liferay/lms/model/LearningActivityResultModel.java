@@ -147,6 +147,20 @@ public interface LearningActivityResultModel extends BaseModel<LearningActivityR
 	public void setResult(long result);
 
 	/**
+	 * Returns the start date of this learning activity result.
+	 *
+	 * @return the start date of this learning activity result
+	 */
+	public Date getStartDate();
+
+	/**
+	 * Sets the start date of this learning activity result.
+	 *
+	 * @param startDate the start date of this learning activity result
+	 */
+	public void setStartDate(Date startDate);
+
+	/**
 	 * Returns the end date of this learning activity result.
 	 *
 	 * @return the end date of this learning activity result

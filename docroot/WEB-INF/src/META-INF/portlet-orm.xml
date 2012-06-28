@@ -54,6 +54,9 @@
 			<basic name="actId" />
 			<basic name="userId" />
 			<basic name="result" />
+			<basic name="startDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
 			<basic name="endDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>

@@ -35,7 +35,7 @@ public class LearningActivityResultCacheModel implements CacheModel<LearningActi
 	Serializable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(17);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -47,6 +47,8 @@ public class LearningActivityResultCacheModel implements CacheModel<LearningActi
 		sb.append(userId);
 		sb.append(", result=");
 		sb.append(result);
+		sb.append(", startDate=");
+		sb.append(startDate);
 		sb.append(", endDate=");
 		sb.append(endDate);
 		sb.append(", latId=");
@@ -72,6 +74,13 @@ public class LearningActivityResultCacheModel implements CacheModel<LearningActi
 		learningActivityResultImpl.setActId(actId);
 		learningActivityResultImpl.setUserId(userId);
 		learningActivityResultImpl.setResult(result);
+
+		if (startDate == Long.MIN_VALUE) {
+			learningActivityResultImpl.setStartDate(null);
+		}
+		else {
+			learningActivityResultImpl.setStartDate(new Date(startDate));
+		}
 
 		if (endDate == Long.MIN_VALUE) {
 			learningActivityResultImpl.setEndDate(null);
@@ -99,6 +108,7 @@ public class LearningActivityResultCacheModel implements CacheModel<LearningActi
 	public long actId;
 	public long userId;
 	public long result;
+	public long startDate;
 	public long endDate;
 	public long latId;
 	public String comments;

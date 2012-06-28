@@ -3,6 +3,9 @@ create index IX_A26B5373 on Lms_LearningActivity (groupId, typeId);
 create index IX_A331EE54 on Lms_LearningActivity (uuid_);
 create unique index IX_75B864D6 on Lms_LearningActivity (uuid_, groupId);
 
+create index IX_4AEF2D40 on Lms_LearningActivityResult (actId);
+create index IX_2E4B457A on Lms_LearningActivityResult (actId, userId);
+create index IX_678F5817 on Lms_LearningActivityResult (userId);
 create index IX_8B143A37 on Lms_LearningActivityResult (uuid_);
 
 create index IX_AC65C30D on Lms_LearningActivityTry (uuid_);

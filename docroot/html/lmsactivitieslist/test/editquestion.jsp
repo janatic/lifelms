@@ -60,8 +60,8 @@ keyProperty="answerId"
 modelVar="testanswer">
 
 <liferay-ui:search-container-column-text
-name="correct"
-value="<%=testanswer.getIsCorrect()? \"yes\":\"no\" %>"
+name="answer"
+value="<%=testanswer.getAnswer() %>"
 />
 		<liferay-ui:search-container-column-text name="correct"	align="center" >
 			 <%

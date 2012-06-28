@@ -350,26 +350,33 @@ public class ClpSerializer {
 
 				method4.invoke(newModel, value4);
 
-				Method method5 = newModelClass.getMethod("setEndDate",
+				Method method5 = newModelClass.getMethod("setStartDate",
 						new Class[] { Date.class });
 
-				Date value5 = oldCplModel.getEndDate();
+				Date value5 = oldCplModel.getStartDate();
 
 				method5.invoke(newModel, value5);
 
-				Method method6 = newModelClass.getMethod("setLatId",
-						new Class[] { Long.TYPE });
+				Method method6 = newModelClass.getMethod("setEndDate",
+						new Class[] { Date.class });
 
-				Long value6 = new Long(oldCplModel.getLatId());
+				Date value6 = oldCplModel.getEndDate();
 
 				method6.invoke(newModel, value6);
 
-				Method method7 = newModelClass.getMethod("setComments",
-						new Class[] { String.class });
+				Method method7 = newModelClass.getMethod("setLatId",
+						new Class[] { Long.TYPE });
 
-				String value7 = oldCplModel.getComments();
+				Long value7 = new Long(oldCplModel.getLatId());
 
 				method7.invoke(newModel, value7);
+
+				Method method8 = newModelClass.getMethod("setComments",
+						new Class[] { String.class });
+
+				String value8 = oldCplModel.getComments();
+
+				method8.invoke(newModel, value8);
 
 				return newModel;
 			}
@@ -941,23 +948,29 @@ public class ClpSerializer {
 
 				newModel.setResult(value4);
 
-				Method method5 = oldModelClass.getMethod("getEndDate");
+				Method method5 = oldModelClass.getMethod("getStartDate");
 
 				Date value5 = (Date)method5.invoke(oldModel, (Object[])null);
 
-				newModel.setEndDate(value5);
+				newModel.setStartDate(value5);
 
-				Method method6 = oldModelClass.getMethod("getLatId");
+				Method method6 = oldModelClass.getMethod("getEndDate");
 
-				Long value6 = (Long)method6.invoke(oldModel, (Object[])null);
+				Date value6 = (Date)method6.invoke(oldModel, (Object[])null);
 
-				newModel.setLatId(value6);
+				newModel.setEndDate(value6);
 
-				Method method7 = oldModelClass.getMethod("getComments");
+				Method method7 = oldModelClass.getMethod("getLatId");
 
-				String value7 = (String)method7.invoke(oldModel, (Object[])null);
+				Long value7 = (Long)method7.invoke(oldModel, (Object[])null);
 
-				newModel.setComments(value7);
+				newModel.setLatId(value7);
+
+				Method method8 = oldModelClass.getMethod("getComments");
+
+				String value8 = (String)method8.invoke(oldModel, (Object[])null);
+
+				newModel.setComments(value8);
 
 				return newModel;
 			}

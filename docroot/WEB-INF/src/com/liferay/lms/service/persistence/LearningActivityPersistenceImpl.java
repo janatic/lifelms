@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -44,6 +45,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
+import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.persistence.BatchSessionUtil;
 import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
@@ -1491,6 +1493,317 @@ public class LearningActivityPersistenceImpl extends BasePersistenceImpl<Learnin
 	}
 
 	/**
+	 * Returns all the learning activities that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivity> filterFindByg(long groupId)
+		throws SystemException {
+		return filterFindByg(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the learning activities that the user has permission to view where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of learning activities
+	 * @param end the upper bound of the range of learning activities (not inclusive)
+	 * @return the range of matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivity> filterFindByg(long groupId, int start, int end)
+		throws SystemException {
+		return filterFindByg(groupId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the learning activities that the user has permissions to view where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of learning activities
+	 * @param end the upper bound of the range of learning activities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivity> filterFindByg(long groupId, int start,
+		int end, OrderByComparator orderByComparator) throws SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByg(groupId, start, end, orderByComparator);
+		}
+
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(3 +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_WHERE);
+		}
+		else {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		query.append(_FINDER_COLUMN_G_GROUPID_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			if (getDB().isSupportsInlineDistinct()) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_TABLE,
+					orderByComparator);
+			}
+		}
+
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				query.append(LearningActivityModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				query.append(LearningActivityModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				LearningActivity.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSQLQuery(sql);
+
+			if (getDB().isSupportsInlineDistinct()) {
+				q.addEntity(_FILTER_ENTITY_ALIAS, LearningActivityImpl.class);
+			}
+			else {
+				q.addEntity(_FILTER_ENTITY_TABLE, LearningActivityImpl.class);
+			}
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(groupId);
+
+			return (List<LearningActivity>)QueryUtil.list(q, getDialect(),
+				start, end);
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	/**
+	 * Returns the learning activities before and after the current learning activity in the ordered set of learning activities that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param actId the primary key of the current learning activity
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next learning activity
+	 * @throws com.liferay.lms.NoSuchLearningActivityException if a learning activity with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivity[] filterFindByg_PrevAndNext(long actId,
+		long groupId, OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityException, SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByg_PrevAndNext(actId, groupId, orderByComparator);
+		}
+
+		LearningActivity learningActivity = findByPrimaryKey(actId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LearningActivity[] array = new LearningActivityImpl[3];
+
+			array[0] = filterGetByg_PrevAndNext(session, learningActivity,
+					groupId, orderByComparator, true);
+
+			array[1] = learningActivity;
+
+			array[2] = filterGetByg_PrevAndNext(session, learningActivity,
+					groupId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LearningActivity filterGetByg_PrevAndNext(Session session,
+		LearningActivity learningActivity, long groupId,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_WHERE);
+		}
+		else {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		query.append(_FINDER_COLUMN_G_GROUPID_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					query.append(_ORDER_BY_ENTITY_ALIAS);
+				}
+				else {
+					query.append(_ORDER_BY_ENTITY_TABLE);
+				}
+
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					query.append(_ORDER_BY_ENTITY_ALIAS);
+				}
+				else {
+					query.append(_ORDER_BY_ENTITY_TABLE);
+				}
+
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				query.append(LearningActivityModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				query.append(LearningActivityModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				LearningActivity.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		SQLQuery q = session.createSQLQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		if (getDB().isSupportsInlineDistinct()) {
+			q.addEntity(_FILTER_ENTITY_ALIAS, LearningActivityImpl.class);
+		}
+		else {
+			q.addEntity(_FILTER_ENTITY_TABLE, LearningActivityImpl.class);
+		}
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(groupId);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(learningActivity);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<LearningActivity> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
 	 * Returns all the learning activities where groupId = &#63; and typeId = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -1837,6 +2150,332 @@ public class LearningActivityPersistenceImpl extends BasePersistenceImpl<Learnin
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(groupId);
+
+		qPos.add(typeId);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(learningActivity);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<LearningActivity> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns all the learning activities that the user has permission to view where groupId = &#63; and typeId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param typeId the type ID
+	 * @return the matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivity> filterFindByg_t(long groupId, int typeId)
+		throws SystemException {
+		return filterFindByg_t(groupId, typeId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the learning activities that the user has permission to view where groupId = &#63; and typeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param typeId the type ID
+	 * @param start the lower bound of the range of learning activities
+	 * @param end the upper bound of the range of learning activities (not inclusive)
+	 * @return the range of matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivity> filterFindByg_t(long groupId, int typeId,
+		int start, int end) throws SystemException {
+		return filterFindByg_t(groupId, typeId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the learning activities that the user has permissions to view where groupId = &#63; and typeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param typeId the type ID
+	 * @param start the lower bound of the range of learning activities
+	 * @param end the upper bound of the range of learning activities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<LearningActivity> filterFindByg_t(long groupId, int typeId,
+		int start, int end, OrderByComparator orderByComparator)
+		throws SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByg_t(groupId, typeId, start, end, orderByComparator);
+		}
+
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_WHERE);
+		}
+		else {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+
+		query.append(_FINDER_COLUMN_G_T_TYPEID_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			if (getDB().isSupportsInlineDistinct()) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_TABLE,
+					orderByComparator);
+			}
+		}
+
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				query.append(LearningActivityModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				query.append(LearningActivityModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				LearningActivity.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSQLQuery(sql);
+
+			if (getDB().isSupportsInlineDistinct()) {
+				q.addEntity(_FILTER_ENTITY_ALIAS, LearningActivityImpl.class);
+			}
+			else {
+				q.addEntity(_FILTER_ENTITY_TABLE, LearningActivityImpl.class);
+			}
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(groupId);
+
+			qPos.add(typeId);
+
+			return (List<LearningActivity>)QueryUtil.list(q, getDialect(),
+				start, end);
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	/**
+	 * Returns the learning activities before and after the current learning activity in the ordered set of learning activities that the user has permission to view where groupId = &#63; and typeId = &#63;.
+	 *
+	 * @param actId the primary key of the current learning activity
+	 * @param groupId the group ID
+	 * @param typeId the type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next learning activity
+	 * @throws com.liferay.lms.NoSuchLearningActivityException if a learning activity with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public LearningActivity[] filterFindByg_t_PrevAndNext(long actId,
+		long groupId, int typeId, OrderByComparator orderByComparator)
+		throws NoSuchLearningActivityException, SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByg_t_PrevAndNext(actId, groupId, typeId,
+				orderByComparator);
+		}
+
+		LearningActivity learningActivity = findByPrimaryKey(actId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LearningActivity[] array = new LearningActivityImpl[3];
+
+			array[0] = filterGetByg_t_PrevAndNext(session, learningActivity,
+					groupId, typeId, orderByComparator, true);
+
+			array[1] = learningActivity;
+
+			array[2] = filterGetByg_t_PrevAndNext(session, learningActivity,
+					groupId, typeId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LearningActivity filterGetByg_t_PrevAndNext(Session session,
+		LearningActivity learningActivity, long groupId, int typeId,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_WHERE);
+		}
+		else {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+
+		query.append(_FINDER_COLUMN_G_T_TYPEID_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					query.append(_ORDER_BY_ENTITY_ALIAS);
+				}
+				else {
+					query.append(_ORDER_BY_ENTITY_TABLE);
+				}
+
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					query.append(_ORDER_BY_ENTITY_ALIAS);
+				}
+				else {
+					query.append(_ORDER_BY_ENTITY_TABLE);
+				}
+
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				query.append(LearningActivityModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				query.append(LearningActivityModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				LearningActivity.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		SQLQuery q = session.createSQLQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		if (getDB().isSupportsInlineDistinct()) {
+			q.addEntity(_FILTER_ENTITY_ALIAS, LearningActivityImpl.class);
+		}
+		else {
+			q.addEntity(_FILTER_ENTITY_TABLE, LearningActivityImpl.class);
+		}
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
@@ -2229,6 +2868,54 @@ public class LearningActivityPersistenceImpl extends BasePersistenceImpl<Learnin
 	}
 
 	/**
+	 * Returns the number of learning activities that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the number of matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int filterCountByg(long groupId) throws SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return countByg(groupId);
+		}
+
+		StringBundler query = new StringBundler(2);
+
+		query.append(_FILTER_SQL_COUNT_LEARNINGACTIVITY_WHERE);
+
+		query.append(_FINDER_COLUMN_G_GROUPID_2);
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				LearningActivity.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSQLQuery(sql);
+
+			q.addScalar(COUNT_COLUMN_NAME,
+				com.liferay.portal.kernel.dao.orm.Type.LONG);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(groupId);
+
+			Long count = (Long)q.uniqueResult();
+
+			return count.intValue();
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	/**
 	 * Returns the number of learning activities where groupId = &#63; and typeId = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -2284,6 +2971,60 @@ public class LearningActivityPersistenceImpl extends BasePersistenceImpl<Learnin
 		}
 
 		return count.intValue();
+	}
+
+	/**
+	 * Returns the number of learning activities that the user has permission to view where groupId = &#63; and typeId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param typeId the type ID
+	 * @return the number of matching learning activities that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int filterCountByg_t(long groupId, int typeId)
+		throws SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return countByg_t(groupId, typeId);
+		}
+
+		StringBundler query = new StringBundler(3);
+
+		query.append(_FILTER_SQL_COUNT_LEARNINGACTIVITY_WHERE);
+
+		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+
+		query.append(_FINDER_COLUMN_G_T_TYPEID_2);
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				LearningActivity.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSQLQuery(sql);
+
+			q.addScalar(COUNT_COLUMN_NAME,
+				com.liferay.portal.kernel.dao.orm.Type.LONG);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(groupId);
+
+			qPos.add(typeId);
+
+			Long count = (Long)q.uniqueResult();
+
+			return count.intValue();
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
 	}
 
 	/**
@@ -2389,7 +3130,17 @@ public class LearningActivityPersistenceImpl extends BasePersistenceImpl<Learnin
 	private static final String _FINDER_COLUMN_G_GROUPID_2 = "learningActivity.groupId = ?";
 	private static final String _FINDER_COLUMN_G_T_GROUPID_2 = "learningActivity.groupId = ? AND ";
 	private static final String _FINDER_COLUMN_G_T_TYPEID_2 = "learningActivity.typeId = ?";
+	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "learningActivity.actId";
+	private static final String _FILTER_SQL_SELECT_LEARNINGACTIVITY_WHERE = "SELECT DISTINCT {learningActivity.*} FROM Lms_LearningActivity learningActivity WHERE ";
+	private static final String _FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_1 =
+		"SELECT {Lms_LearningActivity.*} FROM (SELECT DISTINCT learningActivity.actId FROM Lms_LearningActivity learningActivity WHERE ";
+	private static final String _FILTER_SQL_SELECT_LEARNINGACTIVITY_NO_INLINE_DISTINCT_WHERE_2 =
+		") TEMP_TABLE INNER JOIN Lms_LearningActivity ON TEMP_TABLE.actId = Lms_LearningActivity.actId";
+	private static final String _FILTER_SQL_COUNT_LEARNINGACTIVITY_WHERE = "SELECT COUNT(DISTINCT learningActivity.actId) AS COUNT_VALUE FROM Lms_LearningActivity learningActivity WHERE ";
+	private static final String _FILTER_ENTITY_ALIAS = "learningActivity";
+	private static final String _FILTER_ENTITY_TABLE = "Lms_LearningActivity";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "learningActivity.";
+	private static final String _ORDER_BY_ENTITY_TABLE = "Lms_LearningActivity.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LearningActivity exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LearningActivity exists with the key {";
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(

@@ -25,6 +25,7 @@ create table Lms_LearningActivityResult (
 	actId LONG,
 	userId LONG,
 	result LONG,
+	startDate DATE null,
 	endDate DATE null,
 	latId LONG,
 	comments VARCHAR(75) null

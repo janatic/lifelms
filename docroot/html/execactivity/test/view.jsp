@@ -35,6 +35,7 @@ List<TestQuestion> questions=TestQuestionLocalServiceUtil.getQuestions(actId);
 <portlet:actionURL name="correct" var="correctURL">
 <portlet:param name="actId" value="<%=Long.toString(actId) %>"></portlet:param>
 <portlet:param name="latId" value="<%=Long.toString(learningTry.getLatId()) %>"></portlet:param>
+<
 </portlet:actionURL>
 <h2>Cuestionario: <%=activity.getTitle() %></h2>
 <aui:form name="formulario" action="<%=correctURL %>" method="POST">
@@ -44,15 +45,20 @@ for(TestQuestion question:questions)
 	
 
 	%>
-	<div class="question"><%=question.getText() %></div>
+	<div class="question">
+	<div class="questiontext"><%=question.getText() %></div>
 	<%
 	List<TestAnswer> testAnswers= TestAnswerLocalServiceUtil.getTestAnswersByQuestionId(question.getQuestionId());
 	for(TestAnswer answer:testAnswers)
 	{
 		%>
-		<aui:input type="radio" name="answer" value="<%=answer.getAnswerId() %>"></aui:input> <%=answer.getAnswer() %>
+		<div class="answer"><input type="radio" name="question_<%=question.getQuestionId()%>" value="<%=answer.getAnswerId() %>" ><%=answer.getAnswer() %>
+		</div>
 		<%
 	}
+	%>
+	</div>
+	<%
 }
 %>
 <aui:button type="submit"></aui:button>
