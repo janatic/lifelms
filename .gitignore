@@ -1,3 +1,7 @@
 .classpath
 .project
-.settings/
+/.settings
+/docroot/WEB-INF/classes
+
+/build.*.properties
+/dist
