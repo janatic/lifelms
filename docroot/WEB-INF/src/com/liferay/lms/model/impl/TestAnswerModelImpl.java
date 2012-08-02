@@ -69,7 +69,7 @@ public class TestAnswerModelImpl extends BaseModelImpl<TestAnswer>
 			{ "answer", Types.VARCHAR },
 			{ "isCorrect", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lms_TestAnswer (uuid_ VARCHAR(75) null,answerId LONG not null primary key,questionId LONG,actId LONG,precedence LONG,answer VARCHAR(75) null,isCorrect BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Lms_TestAnswer (uuid_ VARCHAR(75) null,answerId LONG not null primary key,questionId LONG,actId LONG,precedence LONG,answer TEXT null,isCorrect BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table Lms_TestAnswer";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

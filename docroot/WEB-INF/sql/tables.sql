@@ -12,11 +12,12 @@ create table Lms_LearningActivity (
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
 	title VARCHAR(75) null,
-	description VARCHAR(75) null,
+	description TEXT null,
 	typeId INTEGER,
 	startdate DATE null,
 	enddate DATE null,
-	precedence INTEGER
+	precedence INTEGER,
+	tries LONG
 );
 
 create table Lms_LearningActivityResult (
@@ -28,7 +29,7 @@ create table Lms_LearningActivityResult (
 	startDate DATE null,
 	endDate DATE null,
 	latId LONG,
-	comments VARCHAR(75) null
+	comments TEXT null
 );
 
 create table Lms_LearningActivityTry (
@@ -41,7 +42,7 @@ create table Lms_LearningActivityTry (
 	endDate DATE null,
 	tryData VARCHAR(75) null,
 	tryResultData VARCHAR(75) null,
-	comments VARCHAR(75) null
+	comments TEXT null
 );
 
 create table Lms_LearningType (
@@ -57,7 +58,7 @@ create table Lms_TestAnswer (
 	questionId LONG,
 	actId LONG,
 	precedence LONG,
-	answer VARCHAR(75) null,
+	answer TEXT null,
 	isCorrect BOOLEAN
 );
 
@@ -65,6 +66,6 @@ create table Lms_TestQuestion (
 	uuid_ VARCHAR(75) null,
 	questionId LONG not null primary key,
 	actId LONG,
-	text_ VARCHAR(75) null,
+	text_ TEXT null,
 	questionType LONG
 );

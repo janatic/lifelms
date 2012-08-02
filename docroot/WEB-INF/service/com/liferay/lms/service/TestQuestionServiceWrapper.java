@@ -31,6 +31,26 @@ public class TestQuestionServiceWrapper implements TestQuestionService,
 		_testQuestionService = testQuestionService;
 	}
 
+	public com.liferay.lms.model.TestQuestion addQuestion(long actId,
+		java.lang.String text, long questionType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testQuestionService.addQuestion(actId, text, questionType);
+	}
+
+	public java.util.List<com.liferay.lms.model.TestQuestion> getQuestions(
+		long actid)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testQuestionService.getQuestions(actid);
+	}
+
+	public com.liferay.lms.model.TestQuestion getQuestion(long questionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testQuestionService.getQuestion(questionId);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

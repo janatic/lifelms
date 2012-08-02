@@ -74,7 +74,7 @@ public class LearningActivityResultModelImpl extends BaseModelImpl<LearningActiv
 			{ "latId", Types.BIGINT },
 			{ "comments", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lms_LearningActivityResult (uuid_ VARCHAR(75) null,larId LONG not null primary key,actId LONG,userId LONG,result LONG,startDate DATE null,endDate DATE null,latId LONG,comments VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table Lms_LearningActivityResult (uuid_ VARCHAR(75) null,larId LONG not null primary key,actId LONG,userId LONG,result LONG,startDate DATE null,endDate DATE null,latId LONG,comments TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table Lms_LearningActivityResult";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

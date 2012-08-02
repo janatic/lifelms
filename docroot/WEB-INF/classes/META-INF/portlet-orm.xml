@@ -39,6 +39,7 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="precedence" />
+			<basic name="tries" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="statusByUserUuid" />

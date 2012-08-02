@@ -32,6 +32,64 @@ public class LearningActivityServiceWrapper implements LearningActivityService,
 		_learningActivityService = learningActivityService;
 	}
 
+	public java.util.List<com.liferay.lms.model.LearningActivity> getLearningActivitiesOfGroup(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityService.getLearningActivitiesOfGroup(groupId);
+	}
+
+	public void deleteLearningactivity(
+		com.liferay.lms.model.LearningActivity lernact)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_learningActivityService.deleteLearningactivity(lernact);
+	}
+
+	public void deleteLearningactivity(long actId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_learningActivityService.deleteLearningactivity(actId);
+	}
+
+	public com.liferay.lms.model.LearningActivity getLearningActivity(
+		long actId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityService.getLearningActivity(actId);
+	}
+
+	public com.liferay.lms.model.LearningActivity addLearningActivity(
+		java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityService.addLearningActivity(title, description,
+			createDate, startDate, endDate, typeId, tries, serviceContext);
+	}
+
+	public com.liferay.lms.model.LearningActivity modLearningActivity(
+		com.liferay.lms.model.LearningActivity lernact,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityService.modLearningActivity(lernact,
+			serviceContext);
+	}
+
+	public com.liferay.lms.model.LearningActivity modLearningActivity(
+		long actId, java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _learningActivityService.modLearningActivity(actId, title,
+			description, createDate, startDate, endDate, typeId, tries,
+			serviceContext);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

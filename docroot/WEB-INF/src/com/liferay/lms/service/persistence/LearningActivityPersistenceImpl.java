@@ -521,6 +521,7 @@ public class LearningActivityPersistenceImpl extends BasePersistenceImpl<Learnin
 		learningActivityImpl.setStartdate(learningActivity.getStartdate());
 		learningActivityImpl.setEnddate(learningActivity.getEnddate());
 		learningActivityImpl.setPrecedence(learningActivity.getPrecedence());
+		learningActivityImpl.setTries(learningActivity.getTries());
 
 		return learningActivityImpl;
 	}

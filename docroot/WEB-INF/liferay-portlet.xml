@@ -21,6 +21,17 @@ com.liferay.lms.asset.LearningActivityAssetRendererFactory
 		</footer-portlet-javascript>
 		<css-class-wrapper>lmsactivitieslist-portlet</css-class-wrapper>
 	</portlet>
+		<portlet>
+		<portlet-name>lmsactivities</portlet-name>
+		<icon>/icon.png</icon>
+		
+		<instanceable>false</instanceable>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>lmsactivitieslist-portlet</css-class-wrapper>
+	</portlet>
 	<portlet>
 		<portlet-name>execactivity</portlet-name>
 		<icon>/icon.png</icon>

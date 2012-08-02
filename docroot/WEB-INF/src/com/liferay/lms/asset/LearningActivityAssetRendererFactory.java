@@ -57,7 +57,7 @@ public class LearningActivityAssetRendererFactory extends BaseAssetRendererFacto
       {
     	  PortletURL portletURL= 
     			  PortletURLFactoryUtil.create(request,"lmsactivitieslist_WAR_liferaylmsportlet",getControlPanelPlid(themeDisplay), PortletRequest.RENDER_PHASE);
-          portletURL.setParameter("mvcPath", "/html/lmsactivitieslist/newactivity.jsp");
+          portletURL.setParameter("mvcPath", "/html/lmsactivitieslist/editactivity.jsp");
          return portletURL;
       }
       catch(Exception e)
@@ -71,6 +71,8 @@ public class LearningActivityAssetRendererFactory extends BaseAssetRendererFacto
 	public boolean hasPermission(PermissionChecker permissionChecker,
 			long classPK, String actionId) throws Exception {
 	
+		//eturn permissionChecker.hasPermission(theme, LearningActivity.class.getName(), 0,
+		//		actionId);
 		return true;
 	}
 

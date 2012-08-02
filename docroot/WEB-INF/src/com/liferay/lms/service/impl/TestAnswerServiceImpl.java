@@ -14,7 +14,17 @@
 
 package com.liferay.lms.service.impl;
 
+import com.liferay.lms.model.LearningActivity;
+import com.liferay.lms.model.TestAnswer;
+import com.liferay.lms.model.TestQuestion;
+import com.liferay.lms.service.LearningActivityLocalServiceUtil;
+import com.liferay.lms.service.TestAnswerLocalServiceUtil;
+import com.liferay.lms.service.TestQuestionLocalServiceUtil;
+import com.liferay.lms.service.TestQuestionLocalServiceWrapper;
 import com.liferay.lms.service.base.TestAnswerServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.security.permission.ActionKeys;
 
 /**
  * The implementation of the test answer remote service.
@@ -35,5 +45,65 @@ import com.liferay.lms.service.base.TestAnswerServiceBaseImpl;
  * @see com.liferay.lms.service.base.TestAnswerServiceBaseImpl
  * @see com.liferay.lms.service.TestAnswerServiceUtil
  */
-public class TestAnswerServiceImpl extends TestAnswerServiceBaseImpl {
+
+public class TestAnswerServiceImpl extends TestAnswerServiceBaseImpl
+{
+	public java.util.List<TestAnswer> getTestAnswersByQuestionId(long questionId) throws SystemException,PortalException
+	{
+		 TestQuestion question=TestQuestionLocalServiceUtil.getTestQuestion(questionId);
+		    LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(question.getActId());
+			if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+					ActionKeys.UPDATE))
+			{
+				return testAnswerPersistence.findByq(questionId);
+			}
+	else
+	{
+		return null;
+	}
+	}
+	public TestAnswer getTestAnswer(long answerId) throws SystemException,PortalException
+	{
+		TestAnswer testAnswer=TestAnswerLocalServiceUtil.getTestAnswer(answerId);
+		TestQuestion question=TestQuestionLocalServiceUtil.getTestQuestion(testAnswer.getQuestionId());
+	    LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(question.getActId());
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.UPDATE))
+		{
+			return testAnswer;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	public TestAnswer modTestAnswer(TestAnswer testAnswer) throws SystemException,PortalException
+	{
+		TestQuestion question=TestQuestionLocalServiceUtil.getTestQuestion(testAnswer.getQuestionId());
+	    LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(question.getActId());
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.UPDATE))
+		{
+		return TestAnswerLocalServiceUtil.updateTestAnswer(testAnswer);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	public TestAnswer addTestAnswer(long questionId, String answer, boolean correct) throws SystemException, PortalException
+	{
+		
+	    TestQuestion question=TestQuestionLocalServiceUtil.getTestQuestion(questionId);
+	    LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(question.getActId());
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.UPDATE))
+		{
+		return TestAnswerLocalServiceUtil.addTestAnswer(questionId, answer, correct);
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

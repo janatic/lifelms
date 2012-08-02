@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.PortletURLFactoryUtil;
 import com.liferay.portlet.asset.model.BaseAssetRenderer;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -107,7 +108,15 @@ public class TestAssetRenderer extends BaseAssetRenderer {
 			public boolean hasEditPermission(PermissionChecker permissionChecker)
 					throws PortalException, SystemException {
 				// TODO Auto-generated method stub
+				if(permissionChecker.hasPermission(this.getGroupId(), LearningActivity.class.getName(), this.getClassPK(),
+						ActionKeys.UPDATE))
+				{
 				return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			@Override
 			public String getSummary(Locale arg0) {

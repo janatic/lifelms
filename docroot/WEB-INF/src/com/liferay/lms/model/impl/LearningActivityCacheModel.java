@@ -35,7 +35,7 @@ public class LearningActivityCacheModel implements CacheModel<LearningActivity>,
 	Serializable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -73,6 +73,8 @@ public class LearningActivityCacheModel implements CacheModel<LearningActivity>,
 		sb.append(enddate);
 		sb.append(", precedence=");
 		sb.append(precedence);
+		sb.append(", tries=");
+		sb.append(tries);
 		sb.append("}");
 
 		return sb.toString();
@@ -162,6 +164,7 @@ public class LearningActivityCacheModel implements CacheModel<LearningActivity>,
 		}
 
 		learningActivityImpl.setPrecedence(precedence);
+		learningActivityImpl.setTries(tries);
 
 		learningActivityImpl.resetOriginalValues();
 
@@ -186,4 +189,5 @@ public class LearningActivityCacheModel implements CacheModel<LearningActivity>,
 	public long startdate;
 	public long enddate;
 	public int precedence;
+	public long tries;
 }

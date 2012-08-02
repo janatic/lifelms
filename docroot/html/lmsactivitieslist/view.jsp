@@ -1,13 +1,14 @@
 <%@page import="com.liferay.portal.kernel.util.ListUtil"%>
 <%@page import="com.liferay.lms.service.LearningActivityLocalServiceUtil"%>
+<%@page import="com.liferay.lms.service.LearningActivityServiceUtil"%>
 <%@page import="com.liferay.lms.model.LearningActivity"%>
 <%@ include file="/init.jsp" %>
 <portlet:renderURL var="newactivityURL">
-<portlet:param name="jspPage" value="/html/lmsactivitieslist/newactivity.jsp"></portlet:param>
+<portlet:param name="jspPage" value="/html/lmsactivitieslist/editactivity.jsp"></portlet:param>
 </portlet:renderURL>
 <div class="portlet-toolbar search-form">
 <%
-java.util.List<LearningActivity> activities=LearningActivityLocalServiceUtil.getLearningActivitiesOfGroup(scopeGroupId);
+java.util.List<LearningActivity> activities=LearningActivityServiceUtil.getLearningActivitiesOfGroup(scopeGroupId);
 
 if( permissionChecker.hasPermission(themeDisplay.getScopeGroupId(),  LearningActivity.class.getName(),0,ActionKeys.ADD_ENTRY))
 {
@@ -21,6 +22,7 @@ url='<%= newactivityURL %>'
 <%
 }
 %>
+<liferay-ui:error ></liferay-ui:error>
 <liferay-ui:search-container emptyResultsMessage="there-are-no-activities"
  delta="10">
 <liferay-ui:search-container-results>
@@ -50,11 +52,15 @@ name="type"
 property="typeId"
 orderable="true"
 />
+<c:if test="<%= permissionChecker.hasPermission(activity.getGroupId(), LearningActivity.class.getName(), activity.getActId(),
+ActionKeys.UPDATE)||permissionChecker.hasPermission(activity.getGroupId(), LearningActivity.class.getName(), activity.getActId(),
+		ActionKeys.DELETE)||permissionChecker.hasPermission(activity.getGroupId(), LearningActivity.class.getName(), activity.getActId(),
+				ActionKeys.PERMISSIONS)%>">
 <liferay-ui:search-container-column-jsp
 path="/html/lmsactivitieslist/admin_actions.jsp"
 align="right"
 />
-
+</c:if>
 </liferay-ui:search-container-row>
 <liferay-ui:search-iterator />
 

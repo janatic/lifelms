@@ -223,6 +223,14 @@ public class LearningActivityClp extends BaseModelImpl<LearningActivity>
 		_precedence = precedence;
 	}
 
+	public long getTries() {
+		return _tries;
+	}
+
+	public void setTries(long tries) {
+		_tries = tries;
+	}
+
 	/**
 	 * @deprecated {@link #isApproved}
 	 */
@@ -304,6 +312,7 @@ public class LearningActivityClp extends BaseModelImpl<LearningActivity>
 		clone.setStartdate(getStartdate());
 		clone.setEnddate(getEnddate());
 		clone.setPrecedence(getPrecedence());
+		clone.setTries(getTries());
 
 		return clone;
 	}
@@ -353,7 +362,7 @@ public class LearningActivityClp extends BaseModelImpl<LearningActivity>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -391,13 +400,15 @@ public class LearningActivityClp extends BaseModelImpl<LearningActivity>
 		sb.append(getEnddate());
 		sb.append(", precedence=");
 		sb.append(getPrecedence());
+		sb.append(", tries=");
+		sb.append(getTries());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.lms.model.LearningActivity");
@@ -475,6 +486,10 @@ public class LearningActivityClp extends BaseModelImpl<LearningActivity>
 			"<column><column-name>precedence</column-name><column-value><![CDATA[");
 		sb.append(getPrecedence());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>tries</column-name><column-value><![CDATA[");
+		sb.append(getTries());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -501,4 +516,5 @@ public class LearningActivityClp extends BaseModelImpl<LearningActivity>
 	private Date _startdate;
 	private Date _enddate;
 	private int _precedence;
+	private long _tries;
 }

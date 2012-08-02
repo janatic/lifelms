@@ -14,7 +14,15 @@
 
 package com.liferay.lms.service.impl;
 
+import com.liferay.lms.model.LearningActivity;
+import com.liferay.lms.model.TestQuestion;
+import com.liferay.lms.service.LearningActivityLocalServiceUtil;
+import com.liferay.lms.service.TestQuestionLocalServiceUtil;
 import com.liferay.lms.service.base.TestQuestionServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.security.auth.PrincipalException;
+import com.liferay.portal.security.permission.ActionKeys;
 
 /**
  * The implementation of the test question remote service.
@@ -35,5 +43,49 @@ import com.liferay.lms.service.base.TestQuestionServiceBaseImpl;
  * @see com.liferay.lms.service.base.TestQuestionServiceBaseImpl
  * @see com.liferay.lms.service.TestQuestionServiceUtil
  */
-public class TestQuestionServiceImpl extends TestQuestionServiceBaseImpl {
+public class TestQuestionServiceImpl extends TestQuestionServiceBaseImpl 
+{
+	public TestQuestion addQuestion(long actId,String text,long questionType) throws SystemException,PortalException
+	{
+		 LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(actId);
+			if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+					ActionKeys.UPDATE))
+			{
+				return TestQuestionLocalServiceUtil.addQuestion(actId, text, questionType);
+			}
+	
+	else
+	{
+		return null;
+	}
+	}
+	public java.util.List<TestQuestion> getQuestions(long actid) throws SystemException, PortalException
+	{
+		LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(actid);
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.UPDATE))
+		{
+	 return testQuestionPersistence.findByac(actid);
+		}
+		
+		else
+		{
+			return null;
+		}
+	}
+public TestQuestion getQuestion(long questionId) throws PortalException, SystemException 
+{
+TestQuestion testQuestion= TestQuestionLocalServiceUtil.getTestQuestion(questionId);
+	LearningActivity lernact=LearningActivityLocalServiceUtil.getLearningActivity(testQuestion.getActId());
+	if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+			ActionKeys.UPDATE))
+	{
+ return testQuestion;
+	}
+
+else
+{
+	return null;
+}
+}
 }

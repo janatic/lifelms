@@ -14,6 +14,13 @@
 
 package com.liferay.lms.service.http;
 
+import com.liferay.lms.service.LearningActivityServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * <p>
  * This class provides a SOAP utility for the
@@ -58,4 +65,115 @@ package com.liferay.lms.service.http;
  * @generated
  */
 public class LearningActivityServiceSoap {
+	public static com.liferay.lms.model.LearningActivity[] getLearningActivitiesOfGroup(
+		long groupId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.lms.model.LearningActivity> returnValue = LearningActivityServiceUtil.getLearningActivitiesOfGroup(groupId);
+
+			return returnValue.toArray(new com.liferay.lms.model.LearningActivity[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteLearningactivity(
+		com.liferay.lms.model.LearningActivity lernact)
+		throws RemoteException {
+		try {
+			LearningActivityServiceUtil.deleteLearningactivity(lernact);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteLearningactivity(long actId)
+		throws RemoteException {
+		try {
+			LearningActivityServiceUtil.deleteLearningactivity(actId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.LearningActivitySoap getLearningActivity(
+		long actId) throws RemoteException {
+		try {
+			com.liferay.lms.model.LearningActivity returnValue = LearningActivityServiceUtil.getLearningActivity(actId);
+
+			return com.liferay.lms.model.LearningActivitySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.LearningActivitySoap addLearningActivity(
+		java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.lms.model.LearningActivity returnValue = LearningActivityServiceUtil.addLearningActivity(title,
+					description, createDate, startDate, endDate, typeId, tries,
+					serviceContext);
+
+			return com.liferay.lms.model.LearningActivitySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.LearningActivitySoap modLearningActivity(
+		com.liferay.lms.model.LearningActivity lernact,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.lms.model.LearningActivity returnValue = LearningActivityServiceUtil.modLearningActivity(lernact,
+					serviceContext);
+
+			return com.liferay.lms.model.LearningActivitySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.LearningActivitySoap modLearningActivity(
+		long actId, java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.lms.model.LearningActivity returnValue = LearningActivityServiceUtil.modLearningActivity(actId,
+					title, description, createDate, startDate, endDate, typeId,
+					tries, serviceContext);
+
+			return com.liferay.lms.model.LearningActivitySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(LearningActivityServiceSoap.class);
 }

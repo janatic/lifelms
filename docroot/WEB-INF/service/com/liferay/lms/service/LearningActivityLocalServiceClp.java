@@ -94,22 +94,29 @@ public class LearningActivityLocalServiceClp
 
 		_addLearningActivityMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
 				"addLearningActivity", java.lang.String.class,
-				java.lang.String.class, java.util.Date.class, int.class,
-				com.liferay.portal.service.ServiceContext.class);
+				java.lang.String.class, java.util.Date.class,
+				java.util.Date.class, java.util.Date.class, int.class,
+				long.class, com.liferay.portal.service.ServiceContext.class);
 
 		_modLearningActivityMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+				"modLearningActivity", long.class, java.lang.String.class,
+				java.lang.String.class, java.util.Date.class,
+				java.util.Date.class, java.util.Date.class, int.class,
+				long.class, com.liferay.portal.service.ServiceContext.class);
+
+		_modLearningActivityMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
 				"modLearningActivity",
 				com.liferay.lms.model.LearningActivity.class,
 				com.liferay.portal.service.ServiceContext.class);
 
-		_getLearningActivitiesOfGroupMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+		_getLearningActivitiesOfGroupMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
 				"getLearningActivitiesOfGroup", long.class);
 
-		_deleteLearningactivityMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+		_deleteLearningactivityMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
 				"deleteLearningactivity",
 				com.liferay.lms.model.LearningActivity.class);
 
-		_deleteLearningactivityMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+		_deleteLearningactivityMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
 				"deleteLearningactivity", long.class);
 	}
 
@@ -611,7 +618,8 @@ public class LearningActivityLocalServiceClp
 
 	public com.liferay.lms.model.LearningActivity addLearningActivity(
 		java.lang.String title, java.lang.String description,
-		java.util.Date createDate, int typeId,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -620,7 +628,50 @@ public class LearningActivityLocalServiceClp
 		MethodHandler methodHandler = new MethodHandler(_addLearningActivityMethodKey18,
 				ClpSerializer.translateInput(title),
 				ClpSerializer.translateInput(description),
-				ClpSerializer.translateInput(createDate), typeId,
+				ClpSerializer.translateInput(createDate),
+				ClpSerializer.translateInput(startDate),
+				ClpSerializer.translateInput(endDate), typeId, tries,
+				ClpSerializer.translateInput(serviceContext));
+
+		try {
+			returnObj = _classLoaderProxy.invoke(methodHandler);
+		}
+		catch (Throwable t) {
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.lms.model.LearningActivity)ClpSerializer.translateOutput(returnObj);
+	}
+
+	public com.liferay.lms.model.LearningActivity modLearningActivity(
+		long actId, java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		MethodHandler methodHandler = new MethodHandler(_modLearningActivityMethodKey19,
+				actId, ClpSerializer.translateInput(title),
+				ClpSerializer.translateInput(description),
+				ClpSerializer.translateInput(createDate),
+				ClpSerializer.translateInput(startDate),
+				ClpSerializer.translateInput(endDate), typeId, tries,
 				ClpSerializer.translateInput(serviceContext));
 
 		try {
@@ -654,7 +705,7 @@ public class LearningActivityLocalServiceClp
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
-		MethodHandler methodHandler = new MethodHandler(_modLearningActivityMethodKey19,
+		MethodHandler methodHandler = new MethodHandler(_modLearningActivityMethodKey20,
 				ClpSerializer.translateInput(larn),
 				ClpSerializer.translateInput(serviceContext));
 
@@ -687,7 +738,7 @@ public class LearningActivityLocalServiceClp
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
-		MethodHandler methodHandler = new MethodHandler(_getLearningActivitiesOfGroupMethodKey20,
+		MethodHandler methodHandler = new MethodHandler(_getLearningActivitiesOfGroupMethodKey21,
 				groupId);
 
 		try {
@@ -714,7 +765,7 @@ public class LearningActivityLocalServiceClp
 		com.liferay.lms.model.LearningActivity lernact)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		MethodHandler methodHandler = new MethodHandler(_deleteLearningactivityMethodKey21,
+		MethodHandler methodHandler = new MethodHandler(_deleteLearningactivityMethodKey22,
 				ClpSerializer.translateInput(lernact));
 
 		try {
@@ -742,7 +793,7 @@ public class LearningActivityLocalServiceClp
 	public void deleteLearningactivity(long actId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		MethodHandler methodHandler = new MethodHandler(_deleteLearningactivityMethodKey22,
+		MethodHandler methodHandler = new MethodHandler(_deleteLearningactivityMethodKey23,
 				actId);
 
 		try {
@@ -792,7 +843,8 @@ public class LearningActivityLocalServiceClp
 	private MethodKey _setBeanIdentifierMethodKey17;
 	private MethodKey _addLearningActivityMethodKey18;
 	private MethodKey _modLearningActivityMethodKey19;
-	private MethodKey _getLearningActivitiesOfGroupMethodKey20;
-	private MethodKey _deleteLearningactivityMethodKey21;
+	private MethodKey _modLearningActivityMethodKey20;
+	private MethodKey _getLearningActivitiesOfGroupMethodKey21;
 	private MethodKey _deleteLearningactivityMethodKey22;
+	private MethodKey _deleteLearningactivityMethodKey23;
 }

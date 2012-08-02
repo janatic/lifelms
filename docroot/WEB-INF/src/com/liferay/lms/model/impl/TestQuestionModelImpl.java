@@ -67,7 +67,7 @@ public class TestQuestionModelImpl extends BaseModelImpl<TestQuestion>
 			{ "text_", Types.VARCHAR },
 			{ "questionType", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lms_TestQuestion (uuid_ VARCHAR(75) null,questionId LONG not null primary key,actId LONG,text_ VARCHAR(75) null,questionType LONG)";
+	public static final String TABLE_SQL_CREATE = "create table Lms_TestQuestion (uuid_ VARCHAR(75) null,questionId LONG not null primary key,actId LONG,text_ TEXT null,questionType LONG)";
 	public static final String TABLE_SQL_DROP = "drop table Lms_TestQuestion";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

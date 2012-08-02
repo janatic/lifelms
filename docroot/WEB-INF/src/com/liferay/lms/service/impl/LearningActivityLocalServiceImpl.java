@@ -46,7 +46,7 @@ import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
  */
 public class LearningActivityLocalServiceImpl
 	extends LearningActivityLocalServiceBaseImpl {
-	public LearningActivity addLearningActivity (String title, String description, java.util.Date createDate, int typeId,
+	public LearningActivity addLearningActivity (String title, String description, java.util.Date createDate,java.util.Date startDate,java.util.Date endDate, int typeId,long tries,
 			ServiceContext serviceContext)
 			throws SystemException, 
 			PortalException {
@@ -62,8 +62,11 @@ public class LearningActivityLocalServiceImpl
 			larn.setDescription(description);
 			larn.setTypeId(typeId);
 			larn.setTitle(title);
+			larn.setStartdate(startDate);
+			larn.setEnddate(endDate);
+			larn.setTries(tries);
 			larn.setStatus(WorkflowConstants.STATUS_APPROVED);
-			learningActivityPersistence.update(larn, false);
+			learningActivityPersistence.update(larn, true);
 			try
 			{
 			resourceLocalService.addResources(
@@ -71,6 +74,41 @@ public class LearningActivityLocalServiceImpl
 			LearningActivity.class.getName(), larn.getPrimaryKey(), false,
 			true, true);
 	
+			assetEntryLocalService.updateEntry(
+					userId, larn.getGroupId(), LearningActivity.class.getName(),
+					larn.getActId(), larn.getUuid(),0, serviceContext.getAssetCategoryIds(),
+					serviceContext.getAssetTagNames(), true, null, null,
+					new java.util.Date(System.currentTimeMillis()), null,
+					ContentTypes.TEXT_HTML, larn.getTitle(), null, larn.getDescription(),null, null, 0, 0,
+					null, false);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return larn;
+			}
+	public LearningActivity modLearningActivity (long actId,String title, String description, java.util.Date createDate,java.util.Date startDate,java.util.Date endDate, int typeId,long tries,
+			ServiceContext serviceContext)
+			throws SystemException, 
+			PortalException {
+		
+		long userId=serviceContext.getUserId();
+		LearningActivity larn =this.getLearningActivity(actId);
+			larn.setCompanyId(serviceContext.getCompanyId());
+			larn.setGroupId(serviceContext.getScopeGroupId());
+			larn.setUserId(userId);
+			larn.setCreateDate(serviceContext.getCreateDate());
+			larn.setDescription(description);
+			larn.setTitle(title);
+			larn.setStartdate(startDate);
+			larn.setEnddate(endDate);
+			larn.setTries(tries);
+			larn.setStatus(WorkflowConstants.STATUS_APPROVED);
+			learningActivityPersistence.update(larn, true);
+			try
+			{
+				
 			assetEntryLocalService.updateEntry(
 					userId, larn.getGroupId(), LearningActivity.class.getName(),
 					larn.getActId(), larn.getUuid(),0, serviceContext.getAssetCategoryIds(),
@@ -109,6 +147,7 @@ public class LearningActivityLocalServiceImpl
 	public void deleteLearningactivity (LearningActivity lernact) throws SystemException,
 	PortalException {
 	long companyId = lernact.getCompanyId();
+	assetEntryLocalService.deleteEntry(LearningActivity.class.getName(),lernact.getActId());
 	resourceLocalService.deleteResource(
 	companyId, LearningActivity.class.getName(),
 	ResourceConstants.SCOPE_INDIVIDUAL, lernact.getPrimaryKey());

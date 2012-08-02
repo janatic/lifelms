@@ -38,6 +38,27 @@ public class TestQuestionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.lms.service.impl.TestQuestionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.lms.model.TestQuestion addQuestion(long actId,
+		java.lang.String text, long questionType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addQuestion(actId, text, questionType);
+	}
+
+	public static java.util.List<com.liferay.lms.model.TestQuestion> getQuestions(
+		long actid)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getQuestions(actid);
+	}
+
+	public static com.liferay.lms.model.TestQuestion getQuestion(
+		long questionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getQuestion(questionId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

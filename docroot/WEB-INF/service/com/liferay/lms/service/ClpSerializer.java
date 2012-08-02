@@ -285,6 +285,13 @@ public class ClpSerializer {
 
 				method17.invoke(newModel, value17);
 
+				Method method18 = newModelClass.getMethod("setTries",
+						new Class[] { Long.TYPE });
+
+				Long value18 = new Long(oldCplModel.getTries());
+
+				method18.invoke(newModel, value18);
+
 				return newModel;
 			}
 			catch (Exception e) {
@@ -890,6 +897,12 @@ public class ClpSerializer {
 						(Object[])null);
 
 				newModel.setPrecedence(value17);
+
+				Method method18 = oldModelClass.getMethod("getTries");
+
+				Long value18 = (Long)method18.invoke(oldModel, (Object[])null);
+
+				newModel.setTries(value18);
 
 				return newModel;
 			}

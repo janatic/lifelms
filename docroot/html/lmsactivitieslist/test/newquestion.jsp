@@ -1,13 +1,7 @@
 
-<%@page import="com.liferay.lms.service.LearningActivityLocalServiceUtil"%>
-<%@page import="com.liferay.lms.model.LearningActivity"%>
 
-<%@ include file="/init.jsp" %>
-<%
-long actId=ParamUtil.getLong(request,"actId");
-LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(actId);
+<%@ include file="/html/lmsactivitieslist/test/init.jsp" %>
 
-%>
 <portlet:actionURL var="addquestionURL" name="addquestion" >
 </portlet:actionURL>
 <portlet:renderURL var="cancel">
@@ -15,7 +9,10 @@ LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(a
 </portlet:renderURL>
 <aui:form name="newact" action="<%=addquestionURL%>"  method="post">
 <aui:input name="actId" type="hidden" value="<%= learnact.getActId()%>"></aui:input>
-<aui:input name="text" label="text"></aui:input>
+<aui:field-wrapper label="text">
+			<liferay-ui:input-editor name="text" width="50%" />
+			<aui:input name="text" type="hidden" />	
+		</aui:field-wrapper>
 <aui:select name="typeId" label="qtype">
 <aui:option value="0" label="options"></aui:option>
 </aui:select>

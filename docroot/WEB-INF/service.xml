@@ -41,6 +41,7 @@
 		
 
 		<!-- Order -->
+        <column name="tries" type="long" convert-null="false"></column>
 
 		<order by="asc">
 			<order-column name="startdate" />

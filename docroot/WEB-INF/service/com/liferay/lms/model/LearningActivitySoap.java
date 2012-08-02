@@ -49,6 +49,7 @@ public class LearningActivitySoap implements Serializable {
 		soapModel.setStartdate(model.getStartdate());
 		soapModel.setEnddate(model.getEnddate());
 		soapModel.setPrecedence(model.getPrecedence());
+		soapModel.setTries(model.getTries());
 
 		return soapModel;
 	}
@@ -247,6 +248,14 @@ public class LearningActivitySoap implements Serializable {
 		_precedence = precedence;
 	}
 
+	public long getTries() {
+		return _tries;
+	}
+
+	public void setTries(long tries) {
+		_tries = tries;
+	}
+
 	private String _uuid;
 	private long _actId;
 	private long _companyId;
@@ -265,4 +274,5 @@ public class LearningActivitySoap implements Serializable {
 	private Date _startdate;
 	private Date _enddate;
 	private int _precedence;
+	private long _tries;
 }

@@ -2,12 +2,11 @@
 <!DOCTYPE display PUBLIC "-//Liferay//DTD Display 6.1.0//EN" "http://www.liferay.com/dtd/liferay-display_6_1_0.dtd">
 
 <display>
-	<category name="category.sample">
-		<portlet id="liferaylms" />
-	</category>
 	<category name="LMS">
 		<portlet id="lmsactivitieslist"></portlet>
 		<portlet id="execactivity"></portlet>
 		<portlet id="gradebook"></portlet>
+		<portlet id="lmsactivities"></portlet>
+		
 	</category>
 </display>

@@ -31,6 +31,33 @@ public class TestAnswerServiceWrapper implements TestAnswerService,
 		_testAnswerService = testAnswerService;
 	}
 
+	public java.util.List<com.liferay.lms.model.TestAnswer> getTestAnswersByQuestionId(
+		long questionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testAnswerService.getTestAnswersByQuestionId(questionId);
+	}
+
+	public com.liferay.lms.model.TestAnswer getTestAnswer(long answerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testAnswerService.getTestAnswer(answerId);
+	}
+
+	public com.liferay.lms.model.TestAnswer modTestAnswer(
+		com.liferay.lms.model.TestAnswer testAnswer)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testAnswerService.modTestAnswer(testAnswer);
+	}
+
+	public com.liferay.lms.model.TestAnswer addTestAnswer(long questionId,
+		java.lang.String answer, boolean correct)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _testAnswerService.addTestAnswer(questionId, answer, correct);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

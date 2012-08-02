@@ -351,6 +351,20 @@ public interface LearningActivityModel extends BaseModel<LearningActivity>,
 	public void setPrecedence(int precedence);
 
 	/**
+	 * Returns the tries of this learning activity.
+	 *
+	 * @return the tries of this learning activity
+	 */
+	public long getTries();
+
+	/**
+	 * Sets the tries of this learning activity.
+	 *
+	 * @param tries the tries of this learning activity
+	 */
+	public void setTries(long tries);
+
+	/**
 	 * @deprecated Renamed to {@link #isApproved()}
 	 */
 	public boolean getApproved();

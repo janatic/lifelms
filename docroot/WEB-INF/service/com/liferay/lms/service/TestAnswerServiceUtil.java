@@ -38,6 +38,33 @@ public class TestAnswerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.lms.service.impl.TestAnswerServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.util.List<com.liferay.lms.model.TestAnswer> getTestAnswersByQuestionId(
+		long questionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTestAnswersByQuestionId(questionId);
+	}
+
+	public static com.liferay.lms.model.TestAnswer getTestAnswer(long answerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTestAnswer(answerId);
+	}
+
+	public static com.liferay.lms.model.TestAnswer modTestAnswer(
+		com.liferay.lms.model.TestAnswer testAnswer)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().modTestAnswer(testAnswer);
+	}
+
+	public static com.liferay.lms.model.TestAnswer addTestAnswer(
+		long questionId, java.lang.String answer, boolean correct)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addTestAnswer(questionId, answer, correct);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

@@ -1,11 +1,4 @@
-<%@page import="com.liferay.lms.service.TestAnswerLocalServiceUtil"%>
-<%@page import="com.liferay.lms.model.TestAnswer"%>
-<%@page import="com.liferay.lms.service.TestQuestionLocalServiceUtil"%>
-<%@page import="com.liferay.lms.service.LearningActivityLocalServiceUtil"%>
-<%@page import="com.liferay.lms.model.LearningActivity"%>
-<%@page import="com.liferay.lms.model.TestQuestion"%>
-<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
-<%@ include file="/init.jsp" %>
+<%@ include file="/html/lmsactivitieslist/test/init.jsp" %>
 <%
 TestQuestion question = TestQuestionLocalServiceUtil.getTestQuestion(ParamUtil.getLong(request,"questionId"));
 

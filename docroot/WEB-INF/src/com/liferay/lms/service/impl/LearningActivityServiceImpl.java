@@ -14,7 +14,13 @@
 
 package com.liferay.lms.service.impl;
 
+import com.liferay.lms.model.LearningActivity;
 import com.liferay.lms.service.base.LearningActivityServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.ServiceContext;
 
 /**
  * The implementation of the learning activity remote service.
@@ -35,5 +41,82 @@ import com.liferay.lms.service.base.LearningActivityServiceBaseImpl;
  * @see com.liferay.lms.service.base.LearningActivityServiceBaseImpl
  * @see com.liferay.lms.service.LearningActivityServiceUtil
  */
-public class LearningActivityServiceImpl extends LearningActivityServiceBaseImpl {
+@JSONWebService
+public class LearningActivityServiceImpl extends LearningActivityServiceBaseImpl 
+{
+	public java.util.List<LearningActivity> getLearningActivitiesOfGroup(long groupId) throws SystemException
+	{
+		return learningActivityPersistence.filterFindByg(groupId, 0, 1000);
+	}
+	public void deleteLearningactivity (LearningActivity lernact) throws SystemException,
+	PortalException {
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.DELETE))
+		{
+			learningActivityLocalService.deleteLearningactivity(lernact);
+		}
+	}
+	public void deleteLearningactivity (long actId) throws SystemException,
+	PortalException {
+		LearningActivity lernact=this.getLearningActivity(actId);
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.DELETE))
+		{
+			learningActivityLocalService.deleteLearningactivity(lernact);
+		}
+	}
+	public LearningActivity getLearningActivity(long actId) throws PortalException, SystemException 
+	{
+		
+	    LearningActivity lernact=learningActivityLocalService.getLearningActivity(actId);
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.VIEW))
+		{
+			return lernact;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	public LearningActivity addLearningActivity (String title, String description, java.util.Date createDate,java.util.Date startDate,java.util.Date endDate, int typeId,long tries,
+			ServiceContext serviceContext)
+			throws SystemException, 
+			PortalException {
+		if( getPermissionChecker().hasPermission(serviceContext.getScopeGroupId(),  LearningActivity.class.getName(),0,ActionKeys.ADD_ENTRY))
+		{
+		return learningActivityLocalService.addLearningActivity(title, description, createDate, startDate, endDate, typeId, tries, serviceContext);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	public LearningActivity modLearningActivity (LearningActivity lernact, 
+			ServiceContext serviceContext)
+			throws SystemException, PortalException {
+		if( getPermissionChecker().hasPermission(lernact.getGroupId(), LearningActivity.class.getName(), lernact.getActId(),
+				ActionKeys.UPDATE))
+		{
+		return modLearningActivity(lernact, serviceContext);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	public LearningActivity modLearningActivity (long actId,String title, String description, java.util.Date createDate,java.util.Date startDate,java.util.Date endDate, int typeId,long tries,
+			ServiceContext serviceContext) throws SystemException, 
+			PortalException
+	{
+		if( getPermissionChecker().hasPermission(serviceContext.getScopeGroupId(), LearningActivity.class.getName(), actId,
+				ActionKeys.UPDATE))
+		{
+	  return modLearningActivity(actId, title, description, createDate, startDate, endDate, typeId, tries, serviceContext);
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

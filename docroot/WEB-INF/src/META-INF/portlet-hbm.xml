@@ -30,6 +30,7 @@
 		<property name="startdate" type="org.hibernate.type.TimestampType" />
 		<property name="enddate" type="org.hibernate.type.TimestampType" />
 		<property name="precedence" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="tries" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.liferay.lms.model.impl.LearningActivityResultImpl" table="Lms_LearningActivityResult">
 		<cache usage="read-write" />

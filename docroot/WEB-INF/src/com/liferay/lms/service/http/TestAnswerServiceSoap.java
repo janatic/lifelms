@@ -14,6 +14,13 @@
 
 package com.liferay.lms.service.http;
 
+import com.liferay.lms.service.TestAnswerServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * <p>
  * This class provides a SOAP utility for the
@@ -58,4 +65,63 @@ package com.liferay.lms.service.http;
  * @generated
  */
 public class TestAnswerServiceSoap {
+	public static com.liferay.lms.model.TestAnswer[] getTestAnswersByQuestionId(
+		long questionId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.lms.model.TestAnswer> returnValue = TestAnswerServiceUtil.getTestAnswersByQuestionId(questionId);
+
+			return returnValue.toArray(new com.liferay.lms.model.TestAnswer[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.TestAnswerSoap getTestAnswer(
+		long answerId) throws RemoteException {
+		try {
+			com.liferay.lms.model.TestAnswer returnValue = TestAnswerServiceUtil.getTestAnswer(answerId);
+
+			return com.liferay.lms.model.TestAnswerSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.TestAnswerSoap modTestAnswer(
+		com.liferay.lms.model.TestAnswer testAnswer) throws RemoteException {
+		try {
+			com.liferay.lms.model.TestAnswer returnValue = TestAnswerServiceUtil.modTestAnswer(testAnswer);
+
+			return com.liferay.lms.model.TestAnswerSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.TestAnswerSoap addTestAnswer(
+		long questionId, java.lang.String answer, boolean correct)
+		throws RemoteException {
+		try {
+			com.liferay.lms.model.TestAnswer returnValue = TestAnswerServiceUtil.addTestAnswer(questionId,
+					answer, correct);
+
+			return com.liferay.lms.model.TestAnswerSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TestAnswerServiceSoap.class);
 }

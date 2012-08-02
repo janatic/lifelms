@@ -422,6 +422,24 @@ public class LearningActivityWrapper implements LearningActivity,
 	}
 
 	/**
+	* Returns the tries of this learning activity.
+	*
+	* @return the tries of this learning activity
+	*/
+	public long getTries() {
+		return _learningActivity.getTries();
+	}
+
+	/**
+	* Sets the tries of this learning activity.
+	*
+	* @param tries the tries of this learning activity
+	*/
+	public void setTries(long tries) {
+		_learningActivity.setTries(tries);
+	}
+
+	/**
 	* @deprecated Renamed to {@link #isApproved()}
 	*/
 	public boolean getApproved() {

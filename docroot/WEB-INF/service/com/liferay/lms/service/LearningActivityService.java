@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
 /**
@@ -42,4 +43,45 @@ public interface LearningActivityService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LearningActivityServiceUtil} to access the learning activity remote service. Add custom service methods to {@link com.liferay.lms.service.impl.LearningActivityServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.lms.model.LearningActivity> getLearningActivitiesOfGroup(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public void deleteLearningactivity(
+		com.liferay.lms.model.LearningActivity lernact)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public void deleteLearningactivity(long actId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.lms.model.LearningActivity getLearningActivity(
+		long actId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public com.liferay.lms.model.LearningActivity addLearningActivity(
+		java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public com.liferay.lms.model.LearningActivity modLearningActivity(
+		com.liferay.lms.model.LearningActivity lernact,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public com.liferay.lms.model.LearningActivity modLearningActivity(
+		long actId, java.lang.String title, java.lang.String description,
+		java.util.Date createDate, java.util.Date startDate,
+		java.util.Date endDate, int typeId, long tries,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

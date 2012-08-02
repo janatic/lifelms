@@ -83,9 +83,10 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 			{ "typeId", Types.INTEGER },
 			{ "startdate", Types.TIMESTAMP },
 			{ "enddate", Types.TIMESTAMP },
-			{ "precedence", Types.INTEGER }
+			{ "precedence", Types.INTEGER },
+			{ "tries", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lms_LearningActivity (uuid_ VARCHAR(75) null,actId LONG not null primary key,companyId LONG,userId LONG,groupId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,title VARCHAR(75) null,description VARCHAR(75) null,typeId INTEGER,startdate DATE null,enddate DATE null,precedence INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table Lms_LearningActivity (uuid_ VARCHAR(75) null,actId LONG not null primary key,companyId LONG,userId LONG,groupId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,title VARCHAR(75) null,description TEXT null,typeId INTEGER,startdate DATE null,enddate DATE null,precedence INTEGER,tries LONG)";
 	public static final String TABLE_SQL_DROP = "drop table Lms_LearningActivity";
 	public static final String ORDER_BY_JPQL = " ORDER BY learningActivity.startdate ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Lms_LearningActivity.startdate ASC";
@@ -132,6 +133,7 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 		model.setStartdate(soapModel.getStartdate());
 		model.setEnddate(soapModel.getEnddate());
 		model.setPrecedence(soapModel.getPrecedence());
+		model.setTries(soapModel.getTries());
 
 		return model;
 	}
@@ -421,6 +423,15 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 		_precedence = precedence;
 	}
 
+	@JSON
+	public long getTries() {
+		return _tries;
+	}
+
+	public void setTries(long tries) {
+		_tries = tries;
+	}
+
 	/**
 	 * @deprecated {@link #isApproved}
 	 */
@@ -516,6 +527,7 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 		learningActivityImpl.setStartdate(getStartdate());
 		learningActivityImpl.setEnddate(getEnddate());
 		learningActivityImpl.setPrecedence(getPrecedence());
+		learningActivityImpl.setTries(getTries());
 
 		learningActivityImpl.resetOriginalValues();
 
@@ -687,12 +699,14 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 
 		learningActivityCacheModel.precedence = getPrecedence();
 
+		learningActivityCacheModel.tries = getTries();
+
 		return learningActivityCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -730,13 +744,15 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 		sb.append(getEnddate());
 		sb.append(", precedence=");
 		sb.append(getPrecedence());
+		sb.append(", tries=");
+		sb.append(getTries());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.lms.model.LearningActivity");
@@ -814,6 +830,10 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 			"<column><column-name>precedence</column-name><column-value><![CDATA[");
 		sb.append(getPrecedence());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>tries</column-name><column-value><![CDATA[");
+		sb.append(getTries());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -849,6 +869,7 @@ public class LearningActivityModelImpl extends BaseModelImpl<LearningActivity>
 	private Date _startdate;
 	private Date _enddate;
 	private int _precedence;
+	private long _tries;
 	private transient ExpandoBridge _expandoBridge;
 	private long _columnBitmask;
 	private LearningActivity _escapedModelProxy;

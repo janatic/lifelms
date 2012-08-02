@@ -14,6 +14,13 @@
 
 package com.liferay.lms.service.http;
 
+import com.liferay.lms.service.TestQuestionServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * <p>
  * This class provides a SOAP utility for the
@@ -58,4 +65,49 @@ package com.liferay.lms.service.http;
  * @generated
  */
 public class TestQuestionServiceSoap {
+	public static com.liferay.lms.model.TestQuestionSoap addQuestion(
+		long actId, java.lang.String text, long questionType)
+		throws RemoteException {
+		try {
+			com.liferay.lms.model.TestQuestion returnValue = TestQuestionServiceUtil.addQuestion(actId,
+					text, questionType);
+
+			return com.liferay.lms.model.TestQuestionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.TestQuestion[] getQuestions(long actid)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.lms.model.TestQuestion> returnValue = TestQuestionServiceUtil.getQuestions(actid);
+
+			return returnValue.toArray(new com.liferay.lms.model.TestQuestion[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.lms.model.TestQuestionSoap getQuestion(
+		long questionId) throws RemoteException {
+		try {
+			com.liferay.lms.model.TestQuestion returnValue = TestQuestionServiceUtil.getQuestion(questionId);
+
+			return com.liferay.lms.model.TestQuestionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TestQuestionServiceSoap.class);
 }
