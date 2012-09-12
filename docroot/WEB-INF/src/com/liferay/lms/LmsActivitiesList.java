@@ -183,13 +183,34 @@ public class LmsActivitiesList extends MVCPortlet
 		SessionMessages.add(actionRequest, "answer-added-successfully");
 			LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(TestQuestionLocalServiceUtil.getTestQuestion(answer.getQuestionId()).getActId());
 		 actionResponse.setRenderParameter("questionId",Long.toString(answer.getQuestionId()));
+		 actionResponse.setRenderParameter("actId",Long.toString(learnact.getActId()));
 			if(learnact.getTypeId()==0)
 			{
 				
 				actionResponse.setRenderParameter("jspPage", "/html/lmsactivitieslist/test/editquestion.jsp");
 			}
 	}
-	
+	public void editanswer(
+			ActionRequest actionRequest,ActionResponse actionResponse)
+		throws Exception {
+		System.out.println("anado anser");
+		long answerId=ParamUtil.getLong(actionRequest, "answerId");
+		String answer=ParamUtil.getString(actionRequest, "answer");
+		boolean correct=ParamUtil.getBoolean(actionRequest, "correct");
+		TestAnswer testanswer=TestAnswerLocalServiceUtil.getTestAnswer(answerId);
+		testanswer.setAnswer(answer);
+		testanswer.setIsCorrect(correct);
+		TestAnswerLocalServiceUtil.updateTestAnswer(testanswer);
+		SessionMessages.add(actionRequest, "answer-added-successfully");
+			LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(TestQuestionLocalServiceUtil.getTestQuestion(testanswer.getQuestionId()).getActId());
+		 actionResponse.setRenderParameter("questionId",Long.toString(testanswer.getQuestionId()));
+		 actionResponse.setRenderParameter("actId",Long.toString(learnact.getActId()));
+			if(learnact.getTypeId()==0)
+			{
+				
+				actionResponse.setRenderParameter("jspPage", "/html/lmsactivitieslist/test/editquestion.jsp");
+			}
+	}
 	public void addquestion
 	(
 			ActionRequest actionRequest,ActionResponse actionResponse)
@@ -236,6 +257,8 @@ public class LmsActivitiesList extends MVCPortlet
 		SessionMessages.add(actionRequest, "question-modified-successfully");
 		LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(question.getActId());
 		 actionResponse.setRenderParameter("questionId",Long.toString(questionId));
+		 actionResponse.setRenderParameter("actId",Long.toString(learnact.getActId()));
+			
 			if(learnact.getTypeId()==0)
 			{
 				
@@ -281,6 +304,8 @@ LearningActivity learnact=LearningActivityLocalServiceUtil.getLearningActivity(q
 		TestAnswerLocalServiceUtil.deleteTestAnswer(ParamUtil.getLong(actionRequest,"answerId"));
 		SessionMessages.add(actionRequest, "answer-deleted-successfully");
 		 actionResponse.setRenderParameter("questionId",Long.toString(answer.getQuestionId()));
+		 actionResponse.setRenderParameter("actId",Long.toString(learnact.getActId()));
+			
 			if(learnact.getTypeId()==0)
 			{
 				

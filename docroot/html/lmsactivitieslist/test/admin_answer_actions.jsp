@@ -13,12 +13,7 @@ String questionId=String.valueOf(answer.getQuestionId());
 String actId = String.valueOf(answer.getActId());
 %>
 <liferay-ui:icon-menu>
-<portlet:renderURL var="editURL">
-<portlet:param name="jspPage" value="/html/lmsactivitieslist/test/editanswer.jsp"></portlet:param>
-<portlet:param name="answer" value="<%=primKey %>" />
-<portlet:param name="actId" value="<%= actId %>" />
-</portlet:renderURL>
-<liferay-ui:icon image="edit" message="Edit" url="<%=editURL.toString() %>" />
+
 <portlet:actionURL name="deleteanswer" var="deleteURL">
 <portlet:param name="answerId" value="<%= primKey %>" />
 <portlet:param name="actId" value="<%= actId %>" />

@@ -1,0 +1,9 @@
+.question {
+  border: 0;
+  border-bottom: 1px;
+  border-style: solid;
+  border-color: black; }
+
+.questiontext {
+  margin: 4px; }
+

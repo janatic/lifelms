@@ -163,7 +163,7 @@ public class LearningActivityIndexer extends BaseIndexer {
 		SearchEngineUtil.updateDocuments(companyId, documents);
 	}
 
-	@Override
+	//@Override
 	public String getPortletId() {
 		// TODO Auto-generated method stub
 		return PORTLET_ID;

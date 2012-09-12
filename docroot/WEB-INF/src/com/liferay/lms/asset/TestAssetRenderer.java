@@ -118,12 +118,12 @@ public class TestAssetRenderer extends BaseAssetRenderer {
 					return false;
 				}
 			}
-			@Override
+			//@Override
 			public String getSummary(Locale arg0) {
 				
 				return getSummary();
 			}
-			@Override
+			//@Override
 			public String getTitle(Locale arg0) {
 				// TODO Auto-generated method stub
 				return getTitle();
